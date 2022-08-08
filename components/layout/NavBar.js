@@ -121,11 +121,10 @@ const ResponsiveAppBar = () => {
               }}
             >
               
-                <MenuItem  onClick={handleCloseNavMenu}
-                >
+                <MenuItem  onClick={handleCloseNavMenu}>
                  <Link href="/"><Typography textAlign="center" width="100vw">Cryptocurrencies</Typography></Link>
                  <Link href="/nfts"><Typography textAlign="center" width="100vw">NFTs</Typography></Link>
-                 <Link href="/news"><Typography textAlign="center" width="100vw">News</Typography></Link>
+                 <Link href="/news" to="/news"><Typography textAlign="center" width="100vw">News</Typography></Link>
                 </MenuItem>
               
             </Menu>
