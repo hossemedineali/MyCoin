@@ -20,7 +20,7 @@ sx={{width:'100%',display:'flex',justifyContent:'space-between',margin:'1rem'}}
 
 const NumbersInfo = (props) => {
 
-    console.log(props.total_supply)
+   
 
 
 
@@ -29,12 +29,12 @@ const NumbersInfo = (props) => {
          currency: cureency,minimumFractionDigits: 0 }, ).format(number)
          else return Intl.NumberFormat('en-US', {minimumFractionDigits: 0 }, ).format(number)
     }
-    console.log(props)
+    
     return ( 
       
             <Grid container sx={{justifyContent:'space-evenly',}} >
 
-             <Grid xs={12} md={6} >
+             <Grid Item xs={12} md={6} >
                 <Item >
                     <Typo>Market Cap</Typo>
                     <Typo>{NumberFormatter(props.market_cap)}</Typo>
@@ -42,7 +42,7 @@ const NumbersInfo = (props) => {
                 </Item>
              </Grid>  
 
-             <Grid xs={12} md={6} >
+             <Grid Item xs={12} md={6} >
                 <Item >
                     <Typo>24 Hour Trading Vol </Typo>
                     <Typo>{NumberFormatter(props.volume_24h)}</Typo>
