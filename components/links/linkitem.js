@@ -1,4 +1,4 @@
-import { Chip, Grid, Typography } from "@mui/material";
+import { Chip,  Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { styled } from '@mui/system';
 import RedditIcon from '@mui/icons-material/Reddit';
@@ -20,18 +20,7 @@ const LinkBox = styled(Box)({
      flexWrap:'wrap'
   });
 
-/* const testdata ={
-    contract_address : '0x474021845c4643113458ea4414bdb7fb74a01a77',
-    homepage: ["http://www.bitcoin.org"],
-    blockchain_site:["https://etherscan.io/token/0x474021845c4643113458ea4414bdb7fb74a01a77",
-    "https://ethplorer.io/address/0x474021845c4643113458ea4414bdb7fb74a01a77",
-    "https://bscscan.com/token/0x474021845C4643113458ea4414bdb7fB74A01A77",]
-}
- */
 
-  
-  
-//http://www.bitcoin.org
 
 const LinkItem = (props) => {
 
@@ -39,7 +28,7 @@ const LinkItem = (props) => {
        return  (new URL(url)).hostname.replace('www.','');
     }
     
-    console.log(props)
+   
    
 
     return ( 
@@ -51,9 +40,9 @@ const LinkItem = (props) => {
          <ContainnerBox >
             <Typography>{props.name}</Typography>
             <LinkBox>
-                {props.data.reddit && <a href={props.data.reddit} target='blank' style={{cursor:'pointer'}}><Chip icon={<RedditIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Reddit' } > </Chip></a>}
-                {props.data.twitter && <a href={'https://twitter.com/'+props.data.twitter} target='blank' style={{cursor:'pointer'}}><Chip icon={<TwitterIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Twitter' } > </Chip></a>}
-                {props.data.faceboook && <a href={'https://www.facebook.com/'+props.data.faceboook} target='blank' style={{cursor:'pointer'}}><Chip icon={<FacebookRoundedIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Twitter' } > </Chip></a>}
+                {props.data.reddit && <a href={props.data.reddit} target='blank' style={{cursor:'pointer'}}><Chip icon={<RedditIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Reddit' } /></a>}
+                {props.data.twitter && <a href={'https://twitter.com/'+props.data.twitter} target='blank' style={{cursor:'pointer'}}><Chip icon={<TwitterIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Twitter' }/></a>}
+                {props.data.faceboook && <a href={'https://www.facebook.com/'+props.data.faceboook} target='blank' style={{cursor:'pointer'}}><Chip icon={<FacebookRoundedIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Twitter' }/></a>}
             </LinkBox>
         </ContainnerBox>}
 
@@ -61,7 +50,7 @@ const LinkItem = (props) => {
         {props.name =='Search on' && props.data && 
           <ContainnerBox>  
             <Typography>{props.name}</Typography>
-            {props.data&& <a href={'https://twitter.com/search?q=$'+props.data} target='blank' style={{cursor:'pointer'}}><Chip icon={<SearchIcon color="primary"/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Twitter' } > </Chip></a>}
+            {props.data&& <a href={'https://twitter.com/search?q=$'+props.data} target='blank' style={{cursor:'pointer'}}><Chip icon={<SearchIcon color="primary"/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={' Twitter' } /></a>}
           </ContainnerBox>
         }
         {/* ===============Source code link ==================*/}
@@ -70,7 +59,7 @@ const LinkItem = (props) => {
             <Typography>{props.name}</Typography>
             {
             props.data.map(link=>{
-               return <a href={link} target='blank' style={{cursor:'pointer'}}><Chip icon={<GitHubIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={'Github' } > </Chip></a>
+               return <a href={link} key={link} target='blank' style={{cursor:'pointer'}}><Chip icon={<GitHubIcon/>} sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={'Github' }/></a>
             })
            }
           </ContainnerBox>
@@ -82,9 +71,9 @@ const LinkItem = (props) => {
             <Typography>{props.name}</Typography>
           <LinkBox >
           {props.url ? props.data.map(link=>{
-                if(link) return <a href={link} target='blank' style={{cursor:'pointer'}}><Chip sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={ props.url? getdomainname(link) : link } > </Chip></a>
+                if(link) return <a  href={link} key={link} target='blank' style={{cursor:'pointer'}}><Chip sx={{width:'auto',cursor:'pointer' ,maxWidth:'120px'}} label={ props.url? getdomainname(link) : link } /> </a>
             }) : 
-            <Chip sx={{width:'auto',maxWidth:'120px'}} label={ props.data } > </Chip>
+            <Chip sx={{width:'auto',maxWidth:'120px'}} label={ props.data } />
             }
           </LinkBox>
            

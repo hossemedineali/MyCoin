@@ -1,10 +1,13 @@
 import { Box } from "@mui/system";
-import Chart from "../components/chatrs/Chart";
+import ChartWrapper from "../components/charts/ChartWrapper";
+
 
 const ChartTest = () => {
     return ( <Box>
         <h1>chart test page</h1>
-        <Chart/>
+        <ChartWrapper/>
+
+        
     </Box> );
 }
  

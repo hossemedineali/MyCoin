@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-const Item = styled(Paper)(() => ({
+const Myitem = styled(Paper)(() => ({
     
     display:'flex',
     justifyContent:'space-between',
@@ -14,15 +14,9 @@ const Item = styled(Paper)(() => ({
     fontSize:'15px'
   }));
   
-  /*
-sx={{width:'100%',display:'flex',justifyContent:'space-between',margin:'1rem'}}
-  */
+ 
 
 const NumbersInfo = (props) => {
-
-   
-
-
 
     const  NumberFormatter = (number, isCuurency=true ,cureency='usd')=>{
         if (isCuurency) return Intl.NumberFormat('en-US', { style: 'currency',
@@ -34,47 +28,47 @@ const NumbersInfo = (props) => {
       
             <Grid container sx={{justifyContent:'space-evenly',}} >
 
-             <Grid Item xs={12} md={6} >
-                <Item >
+             <Grid item xs={12} md={6} >
+                <Myitem >
                     <Typo>Market Cap</Typo>
-                    <Typo>{NumberFormatter(props.market_cap)}</Typo>
+                    <Typo>{props.market_cap?  NumberFormatter(props.market_cap) :'?'}</Typo>
                     
-                </Item>
+                </Myitem>
              </Grid>  
 
-             <Grid Item xs={12} md={6} >
-                <Item >
+             <Grid item xs={12} md={6} >
+                <Myitem >
                     <Typo>24 Hour Trading Vol </Typo>
-                    <Typo>{NumberFormatter(props.volume_24h)}</Typo>
-                </Item>
+                    <Typo>{props.volume_24h? NumberFormatter(props.volume_24h) : '?'}</Typo>
+                </Myitem>
              </Grid>  
 
-             <Grid xs={12} md={6}>
-                <Item >
+             <Grid item xs={12} md={6}>
+                <Myitem >
                     <Typo fontSize={15}>Fully Diluted Valuation</Typo>
-                    <Typo>{NumberFormatter(props.fully_diluted_valuation)}</Typo>
-                </Item>
+                    <Typo>{props.fully_diluted_valuation ? NumberFormatter(props.fully_diluted_valuation): '?'}</Typo>
+                </Myitem>
              </Grid>  
 
-             <Grid xs={12} md={6}>
-                <Item >
+             <Grid item xs={12} md={6}>
+                <Myitem >
                     <Typo>Circulating Supply</Typo>
-                    <Typo>{NumberFormatter(props.circulating_supply,0)}</Typo>
-                </Item>
+                    <Typo>{props.circulating_supply ? NumberFormatter(props.circulating_supply,0) :'?'}</Typo>
+                </Myitem>
              </Grid>  
 
-             <Grid xs={12} md={6}>
-                <Item >
+             <Grid item xs={12} md={6}>
+                <Myitem >
                     <Typo>Total Supply </Typo>
-                    <Typo>{NumberFormatter(props.total_supply,0)}</Typo>
-                </Item>
+                    <Typo>{props.total_supply ? NumberFormatter(props.total_supply,0): '?'}</Typo>
+                </Myitem>
              </Grid>  
 
-             <Grid xs={12} md={6}>
-                <Item >
+             <Grid item xs={12} md={6}>
+                <Myitem >
                     <Typo>Max Supply</Typo>
-                    <Typo>{NumberFormatter(props.max_supply,0)}</Typo>
-                </Item>
+                    <Typo>{props.max_supply? NumberFormatter(props.max_supply,0):'?'}</Typo>
+                </Myitem>
              </Grid>  
 
             

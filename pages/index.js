@@ -49,7 +49,13 @@ export default function Home() {
   )
 }
 
+export function getStaticProps(){
 
+
+  return{
+    
+  }
+}
 /*
  <Paginate itemsPerPage={2} page={page} handleChange={handleChange}/>
 */

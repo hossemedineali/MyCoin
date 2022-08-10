@@ -29,21 +29,3 @@ const ProgressBar = (props) => {
 export default ProgressBar;
 
 
-/*
-<Box sx={{
-                width:'300px',
-                marginTop:'1rem'
-            }}>
-                <LinearProgress variant="determinate" value={progresspercentagehelper}/>
-                <Box sx={{
-                    display:'flex',
-                    justifyContent:'space-between'
-                    
-
-                }}>
-                    <Typography variant='p'>{coininfo.market_data.low_24h.usd}</Typography>
-                    <Typography variant='p'>24h range</Typography>
-                    <Typography variant='p'>{coininfo.market_data.high_24h.usd}</Typography>
-                </Box>
-            </Box>
-*/

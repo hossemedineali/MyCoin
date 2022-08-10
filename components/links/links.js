@@ -31,7 +31,9 @@ const testdata ={
 //http://www.bitcoin.org
 const Links = ({coininfo}) => {
     const links=coininfo.links
-    console.log(links.twitter_screen_name)
+    
+
+    console.log('contract adress: ',links.contract_address)
     
     const cumm ={
         reddit:links.subreddit_url , //a link string
@@ -45,7 +47,7 @@ const Links = ({coininfo}) => {
     
     <Box sx={{ display:'flex' ,flexDirection:'column', justifyContent:'center'}}>
        
-        <LinkItem name={'Contract'} data={links.contract_address} url={true}/>
+        <LinkItem name={'Contract'} data={links.contract_address} url={false}/>
         <LinkItem name ={'Website'} data={[...links.homepage,...links.announcement_url]} url={true}/>
         <LinkItem name ={'Explorers'} data={links.blockchain_site} url={true}/>
         <LinkItem name ={'Community'} data={cumm} url={true}/>

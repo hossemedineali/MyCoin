@@ -1,4 +1,5 @@
 import { Avatar, Box,Chip, Grid, LinearProgress, Typography } from '@mui/material';
+import MyInfoTab from '../../components/charts/MyInfoTab/Tab';
 import Links from '../../components/links/links';
 
 import HeadCoinInfo from '../../components/ui/coinidui/HeadCoinInfo';
@@ -6,13 +7,21 @@ import NumbersInfo from '../../components/ui/coinidui/NumbersInfo';
 import ProgressBar from '../../components/ui/coinidui/ProgressBar';
 
 const Coin = ({coininfo}) => {
-    
-        let progresspercentagehelper = 100 -Math.ceil((((coininfo.market_data.high_24h.usd-coininfo.market_data.current_price.usd)/(coininfo.market_data.high_24h.usd-coininfo.market_data.low_24h.usd))*100))
+
+        console.log('======================================')
+        console.log(coininfo)
+        console.log('======================================')
+    let progresspercentagehelper =0
+
+        if(coininfo.market_data.high_24h.usd!=null&&coininfo.market_data.low_24h.usd!=null){
+            progresspercentagehelper = 100 -Math.ceil((((coininfo.market_data.high_24h.usd-coininfo.market_data.current_price.usd)/(coininfo.market_data.high_24h.usd-coininfo.market_data.low_24h.usd))*100))
+        }
+        //let progresspercentagehelper = 100 -Math.ceil((((coininfo.market_data.high_24h.usd-coininfo.market_data.current_price.usd)/(coininfo.market_data.high_24h.usd-coininfo.market_data.low_24h.usd))*100))
         
         return ( 
         <Box sx={{margin:{xs:'1rem',sm:'3rem',md:'2rem'}}}>
          <Grid container>
-            <Grid xs={12} md={8}>
+            <Grid item xs={12} md={8}>
             <HeadCoinInfo coininfo={coininfo}
                 market_cap_rank={coininfo.market_cap_rank}
                 image={coininfo.image.small}
@@ -22,10 +31,10 @@ const Coin = ({coininfo}) => {
                 price_change_percentage_24h={coininfo.market_data.price_change_percentage_24h}
                  />
 
-            <ProgressBar progresspercentagehelper={progresspercentagehelper}
+            {false && progresspercentagehelper>0 && <ProgressBar progresspercentagehelper={progresspercentagehelper}
                 low_24h={coininfo.market_data.low_24h.usd}
                 high_24h={coininfo.market_data.high_24h.usd}
-            />
+            />}
             
             <NumbersInfo 
             market_cap={coininfo.market_data.market_cap.usd}
@@ -37,10 +46,13 @@ const Coin = ({coininfo}) => {
             />
             </Grid>
 
-            <Grid xs={12} md={4}>
+            <Grid item xs={12} md={4}>
                 <Links coininfo={coininfo}/>
             </Grid>
          </Grid>
+
+            <MyInfoTab coininfo={coininfo}/>
+
         </Box>
       
   );
@@ -48,21 +60,22 @@ const Coin = ({coininfo}) => {
 
 
 
-export async function getStaticPaths(){
+/* export async function getStaticPaths(){
 
     return {
         fallback:true,
         paths:[
            { params: {
                 coinId:'bitcoin',
+                //coinId:'crinet',
                 
             }}
         ]
     }
-}
+} */
 
-export async function getStaticProps(context){
-console.log(context.params.coinId)
+/* export async function getStaticProps(context){
+
     const res = await fetch('https://api.coingecko.com/api/v3/coins/'+context.params.coinId)
     const coins = await res.json()
 
@@ -71,7 +84,19 @@ console.log(context.params.coinId)
           coininfo:coins
         },
       };
-}
+} */
  
+export async function getServerSideProps({ query }) {
+    const coinId = query.coinId
+    const res = await fetch('https://api.coingecko.com/api/v3/coins/'+coinId)
+    const coins = await res.json()
+
+    return{
+        props: {
+            coininfo:coins
+          },
+    }
+  }
+
 export default Coin;
 
