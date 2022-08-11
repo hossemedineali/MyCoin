@@ -6,6 +6,8 @@ import HeadCoinInfo from '../../components/ui/coinidui/HeadCoinInfo';
 import NumbersInfo from '../../components/ui/coinidui/NumbersInfo';
 import ProgressBar from '../../components/ui/coinidui/ProgressBar';
 
+import axios from 'axios';
+
 const Coin = ({coininfo}) => {
 
         console.log('======================================')
@@ -85,8 +87,42 @@ const Coin = ({coininfo}) => {
         },
       };
 } */
- 
+
+
 export async function getServerSideProps({ query }) {
+    const coinId = query.coinId
+    let coininfo
+    await axios.get('https://api.coingecko.com/api/v3/coins/'+coinId)
+  .then(function (response) {
+    // handle success
+     coininfo=response.data
+    
+  })
+  .catch(function (error) {
+    // handle error
+    if (error.message=='Request failed with status code 404') {
+        coininfo = error.message
+    }
+    
+  })
+  .then(function () {
+    // always executed
+  });
+
+  if (coininfo=='Request failed with status code 404'){
+    return {redirect: {
+        permanent: false,
+        destination: `/404`
+      },}
+   } else{
+    return{
+        props:{
+            coininfo
+        }
+    }
+   }
+  }
+/* export async function getServerSideProps({ query }) {
     const coinId = query.coinId
     const res = await fetch('https://api.coingecko.com/api/v3/coins/'+coinId)
     const coins = await res.json()
@@ -96,7 +132,7 @@ export async function getServerSideProps({ query }) {
             coininfo:coins
           },
     }
-  }
+  } */
 
 export default Coin;
 

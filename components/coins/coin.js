@@ -118,7 +118,7 @@ total_volume: 14311802708,
   
 
 export default function Coins(props) {
-    console.log('hello from coins comp',props.currentdata)
+    
   return (
         <Box
         sx={{
