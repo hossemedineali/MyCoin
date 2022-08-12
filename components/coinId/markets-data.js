@@ -18,14 +18,14 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   };
 
 const columns =[
-    {field : 'id' ,headerName:'#', sortable :true ,flex: 1,border: 0, },
-    {field : 'exchange' ,headerName:'exchange', sortable :true , flex: 1,border: 0,},
-    {field : 'pair' ,headerName:'pair', sortable :true ,flex: 1  },
-    {field : 'price' ,headerName:'price',...usdPrice,  sortable :true ,flex: 1 ,},
-    {field : 'volume_24h' ,headerName:'24h volume',...usdPrice, sortable :true ,flex: 1},
-    {field : 'volume_percentage' ,headerName:'volume %', sortable :true , flex: 1,headerAlign:'left', },
-    {field : 'last_traded' ,headerName:'last traded', sortable :true ,flex: 1  },
-    {field : 'trust_score' ,headerName:'trust score', sortable :true ,flex: 1,renderCell:(params)=>(
+    {field : 'id' ,headerName:'#', sortable :true ,border: 0,width:80  },
+    {field : 'exchange' ,headerName:'exchange', sortable :true ,border: 0,width:210 },
+    {field : 'pair' ,headerName:'pair', sortable :true,width:120   },
+    {field : 'price' ,headerName:'price',...usdPrice,  sortable :true ,width:150  ,},
+    {field : 'volume_24h' ,headerName:'24h volume',...usdPrice, sortable :true ,width:150 },
+    {field : 'volume_percentage' ,headerName:'volume %', sortable :true , width:120 ,headerAlign:'left', },
+    {field : 'last_traded' ,headerName:'last traded', sortable :true ,width:180   },
+    {field : 'trust_score' ,headerName:'trust score', sortable :true ,width:120 ,renderCell:(params)=>(
     <Box>{params.value=='green'? 
     <Box sx={{width:'15px' , aspectRatio:'1/1',background:'green',borderRadius:'50%'}}></Box> : 
     <Box sx={{width:'15px' , aspectRatio:'1/1',background:'red',borderRadius:'50%'}}></Box>}</Box>) },
@@ -65,7 +65,7 @@ const columns =[
 
     
     return ( 
-    <Box>
+    <Box sx={{width:'100vw'}}>
         <Typography variant='h5'>{props.coin} Markets</Typography>
         <DataGrid sx={{border: 0,}}
             autoHeight={true}

@@ -32,8 +32,6 @@ const testdata ={
 const Links = ({coininfo}) => {
     const links=coininfo.links
     
-
-    console.log('contract adress: ',links.contract_address)
     
     const cumm ={
         reddit:links.subreddit_url , //a link string

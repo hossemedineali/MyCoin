@@ -1,14 +1,17 @@
-import axios from 'axios';
-import Head from 'next/head'
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Coins from '../components/coins/coin';
-import Paginate from '../components/pagination/pagination'
+import GlobalData from '../components/coins/GlobalData';
+import Paginate from '../components/pagination/pagination';
+import Scroll from '../components/ui/coinidui/scroll';
+
+
 
  function Home(props) {
   const [currentpage, setcurrentPage] = useState(1);
   const [currentdata,setcurrentdata]= useState([])
   
-  console.log(props)
+  
   
   
   const handleChange = (event, value) => {
@@ -40,14 +43,17 @@ import Paginate from '../components/pagination/pagination'
 
 
   return (
-    <>
- <Head>
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MyCoin</title>
- </Head>
-    <h1>home page</h1>
-     <Coins currentdata={currentdata}/>
-     <Paginate  page={currentpage} handleChange={handleChange}/>
+            <>
+                 <Head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>MyCoin</title>
+                 </Head>
+                    <Scroll showBelow={450} />
+                 
+                    <GlobalData/>
+                    <Coins currentdata={currentdata}/>
+                    <Paginate  page={currentpage} handleChange={handleChange}/>
+                 
     </>
     
   )

@@ -13,10 +13,15 @@ import MenuItem from '@mui/material/MenuItem';
 
 import SearchInput from '../input/SearchInput';
 import Link from 'next/link';
+import { Divider } from '@mui/material';
+
+
+
+  
 
 
 const pages = ['Cryptocurrencies', 'NFTs', 'News'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const paths =['/','/nfts','/news']
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -42,17 +47,8 @@ const ResponsiveAppBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
+            sx={{mr: 2,display: { xs: 'none', md: 'flex' },fontFamily: 'monospace',fontWeight: 700,letterSpacing: '.3rem',color: 'inherit',textDecoration: 'none',}}
+              >
             MyCoin
           </Typography>
 
@@ -62,7 +58,7 @@ const ResponsiveAppBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -77,20 +73,26 @@ const ResponsiveAppBar = () => {
           >
             Mycoin
           </Typography>
+
+
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+            {pages.map((page,idx) => (
+              <MenuItem><Link href={paths[idx]} key={page}><Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}
               >
+              
                 {page}
-              </Button>
+              </Button></Link></MenuItem>
             ))}
           </Box>
+              <Box sx={{  display: { xs: 'none', md: 'flex' } }}>
+                <MenuItem><Typography  >Log In</Typography></MenuItem>
+                <MenuItem><Typography >Sign Up</Typography></MenuItem>
+              </Box>
                 <Box sx={{flexGrow:1,display:{xs:'none',md:'block'}}}>
                 <SearchInput/>
                 </Box>
+                
           <Box sx={{display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -121,11 +123,25 @@ const ResponsiveAppBar = () => {
               }}
             >
               
-                <MenuItem  onClick={handleCloseNavMenu}>
+                <Box  onClick={handleCloseNavMenu} sx={{display:'block'}}>
+                <MenuItem sx={{height:'3rem',display:'flex',alignItems:'center'}}>
                  <Link href="/"><Typography textAlign="center" width="100vw">Cryptocurrencies</Typography></Link>
-                 <Link href="/nfts"><Typography textAlign="center" width="100vw">NFTs</Typography></Link>
-                 <Link href="/news" to="/news"><Typography textAlign="center" width="100vw">News</Typography></Link>
                 </MenuItem>
+                 <Divider/>
+                 
+                 <MenuItem sx={{height:'3rem',display:'flex',alignItems:'center'}}>
+                 <Link href="/nfts"><Typography textAlign="center" width="100vw">NFTs</Typography></Link>
+                 </MenuItem>
+                 <Divider/>
+                  <MenuItem>
+
+                 <Link href="/news" to="/news"><Typography textAlign="center" width="100vw">News</Typography></Link>
+                  </MenuItem>
+                  <Box sx={{display:'flex',justifyContent:'space-around',padding:'0 20%'}}>
+                  <MenuItem><Typography  >Log In</Typography></MenuItem>
+                <MenuItem><Typography >Sign Up</Typography></MenuItem>
+                  </Box>
+                </Box>
               
             </Menu>
           </Box>

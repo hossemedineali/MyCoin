@@ -1,18 +1,18 @@
 import { Avatar, Box,Chip, Grid, LinearProgress, Typography } from '@mui/material';
 import MyInfoTab from '../../components/charts/MyInfoTab/Tab';
 import Links from '../../components/links/links';
+import Head from 'next/head';
 
 import HeadCoinInfo from '../../components/ui/coinidui/HeadCoinInfo';
 import NumbersInfo from '../../components/ui/coinidui/NumbersInfo';
 import ProgressBar from '../../components/ui/coinidui/ProgressBar';
 
 import axios from 'axios';
+import Scroll from '../../components/ui/coinidui/scroll';
 
 const Coin = ({coininfo}) => {
 
-        console.log('======================================')
-        console.log(coininfo)
-        console.log('======================================')
+        
     let progresspercentagehelper =0
 
         if(coininfo.market_data.high_24h.usd!=null&&coininfo.market_data.low_24h.usd!=null){
@@ -21,7 +21,14 @@ const Coin = ({coininfo}) => {
         //let progresspercentagehelper = 100 -Math.ceil((((coininfo.market_data.high_24h.usd-coininfo.market_data.current_price.usd)/(coininfo.market_data.high_24h.usd-coininfo.market_data.low_24h.usd))*100))
         
         return ( 
+          <>
+                  <Head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>{coininfo.id} price live : {coininfo.symbol} price live chart and more</title>
+                 </Head>
+                 <Scroll showBelow={950}/>
         <Box sx={{margin:{xs:'1rem',sm:'3rem',md:'2rem'}}}>
+        <Box sx={{height:{xs:'auto',md:'72vh'} ,paddingTop:'4rem' }}>
          <Grid container>
             <Grid item xs={12} md={8}>
             <HeadCoinInfo coininfo={coininfo}
@@ -52,10 +59,14 @@ const Coin = ({coininfo}) => {
                 <Links coininfo={coininfo}/>
             </Grid>
          </Grid>
+         </Box>
 
+          
             <MyInfoTab coininfo={coininfo}/>
 
         </Box>
+
+        </>
       
   );
 }
@@ -88,11 +99,11 @@ const Coin = ({coininfo}) => {
       };
 } */
 
-
+//   https://api.coingecko.com/api/v3/coins/bitcoin?sparkline=true
 export async function getServerSideProps({ query }) {
     const coinId = query.coinId
     let coininfo
-    await axios.get('https://api.coingecko.com/api/v3/coins/'+coinId)
+    await axios.get('https://api.coingecko.com/api/v3/coins/'+coinId+'?sparkline=true')
   .then(function (response) {
     // handle success
      coininfo=response.data

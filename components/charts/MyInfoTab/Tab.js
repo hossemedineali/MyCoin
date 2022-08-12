@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Box, Tab, Tabs,Grid } from "@mui/material";
 import ChartWrapper from "../ChartWrapper";
 import MarketsData from "../../coinId/markets-data";
+import PriceStatics from "../../coinId/PriceStatics";
+import ChangeTab from "../UI/changetab";
 
 
 
@@ -56,11 +58,12 @@ const MyInfoTab = (props) => {
 
               <Grid container >
                  <Grid item xs={12} md={8}>
-                  <ChartWrapper coin={props.coininfo.id}/>
+                  <ChartWrapper coin={props.coininfo.id} coininfo={props.coininfo}/>
+                  
                  </Grid>
 
                  <Grid item xs={12} md={4}>
-                   <h1>second grid element</h1>
+                   <PriceStatics coininfo={props.coininfo}/>
                  </Grid>
             </Grid>
            </TabPanel>

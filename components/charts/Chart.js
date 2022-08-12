@@ -5,7 +5,7 @@ import Chart from 'chart.js/auto';
 
 
   const options={
-   
+    maintainAspectRatio: false,
     xAxes: {
       type: 'time',
       ticks: {
@@ -137,7 +137,7 @@ const Chartjs = (props) => {
 
     
     
-    return ( <Box sx={{width:'80%' , height:'80%' ,margin:'auto'}}>
+    return ( <Box sx={{width:'90%' ,height:'75%',margin:'2rem auto',}}>
         
         {chartdata &&<Line data={chartdata} options={options}/>}
     </Box> );

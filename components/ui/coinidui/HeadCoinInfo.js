@@ -6,7 +6,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 const HeadCoinInfo = (props) => {
 
-    console.log('############# price % 24h',props.price_change_percentage_24h)
+    
 
     return ( 
     <Box >

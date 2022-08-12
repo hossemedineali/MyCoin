@@ -19,7 +19,7 @@ const MyBottonGroup = (props) => {
 
     return ( <ButtonGroup>
         {props.btn.map(btn=>{
-            return <Button key={btn.id} id={btn.id} onClick={hundelClick} 
+            return <Button sx={{width:'max-content',padding:'2px'}} key={btn.id} id={btn.id} onClick={hundelClick} 
             variant={selectedmodebutton==btn.id||selectedperiodbutton==btn.id? "contained":"outlined"}>{btn.value}</Button>
         })}
     </ButtonGroup> );

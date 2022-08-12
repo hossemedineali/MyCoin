@@ -6,8 +6,8 @@ const Myitem = styled(Paper)(() => ({
     
     display:'flex',
     justifyContent:'space-between',
-    margin:'0.2rem',
-    padding:'0 1rem',
+    margin:'0.5rem',
+    padding:'0 0.5rem',
     color: 'black',
   }));
   const Typo = styled (Typography)(()=>({

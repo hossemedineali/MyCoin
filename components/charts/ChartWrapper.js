@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 
 import MyBottonGroup from "./UI/MyBottonGroup";
 import { useState } from "react";
+import ChangeTab from "./UI/changetab";
 
 const periodpicker=[
     { id:1 , value:'24h'},
@@ -32,6 +33,7 @@ const ChartWrapper = (props) => {
         const [PickedPeriod,setPickedPeriod]=useState('1');
         const[PickedMode,setPickedmode]=useState('prices')
         
+      
 
      const hundelclickPickedPeriod=(event)=>{
         setPickedPeriod(event.target.id)
@@ -44,14 +46,17 @@ const ChartWrapper = (props) => {
 
      
 
-    return ( <Box>
+    return ( <Box sx={{display:'flex',flexDirection:'column',width:'100%' ,}}>
                <Box sx={{display:'flex', flexWrap:'wrap',justifyContent:'space-between',padding:'0 1rem' ,gap:'1rem'}} >
                <MyBottonGroup btn={modepicker} onclick={hundelclickPickedMode} mode={PickedMode}/>
                <MyBottonGroup btn={periodpicker} onclick={hundelclickPickedPeriod} Period={PickedPeriod}/>
                </Box>
+            <Box sx={{width:'100%',height:'90vh',}}>
+
+            <Chartjs coin={props.coin} Period={PickedPeriod} mode={PickedMode}/>
+            <ChangeTab marketdata={props.coininfo.market_data}/>
+            </Box>
             
-        
-        <Chartjs coin={props.coin} Period={PickedPeriod} mode={PickedMode}/>
     </Box> );
 }
  
