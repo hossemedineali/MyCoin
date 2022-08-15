@@ -20,7 +20,7 @@ const MyBox = styled('div')(({ theme }) => ({
 
 const ChangeTab = ({marketdata}) => {
 
-    console.log(marketdata.price_change_percentage_1h_in_currency)
+    
 
     let h1=marketdata.price_change_percentage_1h_in_currency.usd;
     let h24=marketdata.price_change_percentage_24h;

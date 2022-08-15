@@ -16,23 +16,29 @@ import Link from 'next/link';
 import { Divider } from '@mui/material';
 
 
+import { useDispatch, useSelector } from "react-redux";
 
-  
+import { authActions } from '../Store/auth';
+import { currencyActio } from '../Store/currency';
+
 
 
 const pages = ['Cryptocurrencies', 'NFTs', 'News'];
 const paths =['/','/nfts','/news']
 
 const ResponsiveAppBar = () => {
+
+   const isAuth=useSelector(state=>state.auth.isAuth)
+
+
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   
 
   const handleOpenNavMenu = (event) => {
-   
     setAnchorElNav(event.currentTarget);
   };
  
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
@@ -40,61 +46,66 @@ const ResponsiveAppBar = () => {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      <Container maxWidth="xl" >
+        <Toolbar disableGutters sx={{display:{xs:'block',lg:'flex'}}}>
           
+          {/**  lg logo */}
           <Typography
             variant="h6"
             noWrap
             component="a"
-            sx={{mr: 2,display: { xs: 'none', md: 'flex' },fontFamily: 'monospace',fontWeight: 700,letterSpacing: '.3rem',color: 'inherit',textDecoration: 'none',}}
+            sx={{mr: 2,display: { xs: 'none', lg: 'flex' },fontFamily: 'monospace',
+            fontWeight: 700,letterSpacing: '.3rem',color: 'inherit',
+            textDecoration: 'none',}}
               >
             MyCoin
           </Typography>
 
-         
-          
+          {/*xs  and md logo*/}
+      
+
+
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', lg: 'flex' } ,justifyContent:'space-between',}}>
+          <Box sx={{display:'flex'}}>
+                     {pages.map((page,idx) => (
+              <MenuItem key={page} ><Link href={paths[idx]} key={page}><Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+              
+                {page}
+              </Button></Link></MenuItem>
+              
+            ))}
+            </Box>
+            <Box sx={{  display: { xs: 'none', lg: 'flex' } }}>
+                <MenuItem><Typography  >Log In</Typography></MenuItem>
+                <MenuItem><Typography >Sign Up</Typography></MenuItem>
+
+                {isAuth&&<MenuItem><Typography >logout</Typography></MenuItem>}
+              </Box>
+          </Box>
+             
+                
+          <Box sx={{display: { xs: 'flex', lg: 'none',width:'100%' } }}>
+
           <Typography
             variant="h5"
             noWrap
             component="a"
-            
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
+              display: { xs: 'flex', lg: 'none' },
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-              paddingInline:"40%"
-            }}
-          >
+              paddingInline:"40%",}}>
             Mycoin
           </Typography>
 
-
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page,idx) => (
-              <MenuItem><Link href={paths[idx]} key={page}><Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-              
-                {page}
-              </Button></Link></MenuItem>
-            ))}
-          </Box>
-              <Box sx={{  display: { xs: 'none', md: 'flex' } }}>
-                <MenuItem><Typography  >Log In</Typography></MenuItem>
-                <MenuItem><Typography >Sign Up</Typography></MenuItem>
-              </Box>
-                <Box sx={{flexGrow:1,display:{xs:'none',md:'block'}}}>
-                <SearchInput/>
-                </Box>
-                
-          <Box sx={{display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
+              <Box >
+              <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -104,6 +115,8 @@ const ResponsiveAppBar = () => {
             >
               <MenuIcon />
             </IconButton>
+                      
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -119,7 +132,7 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'block', lg: 'none' },
               }}
             >
               
@@ -139,17 +152,22 @@ const ResponsiveAppBar = () => {
                   </MenuItem>
                   <Box sx={{display:'flex',justifyContent:'space-around',padding:'0 20%'}}>
                   <MenuItem><Typography  >Log In</Typography></MenuItem>
-                <MenuItem><Typography >Sign Up</Typography></MenuItem>
+                  <MenuItem><Typography >Sign Up</Typography></MenuItem>
+
+                  {isAuth&&<MenuItem><Typography >logout</Typography></MenuItem>}
                   </Box>
                 </Box>
               
             </Menu>
+              </Box>
+           
           </Box>
-          
-        </Toolbar>
-        <Box sx={{flexGrow:1,display:{md:'none',xs:'block'}}}>
+          <Box sx={{flexGrow:1}}>
                 <SearchInput/>
                 </Box>
+                
+        </Toolbar>
+        
       </Container>
     </AppBar>
   );
