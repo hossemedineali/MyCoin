@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { authActions } from '../Store/auth';
 import { currencyActio } from '../Store/currency';
+import MyBackdrop from '../ui/coinidui/logform/backdrop';
 
 
 
@@ -28,13 +29,28 @@ const paths =['/','/nfts','/news']
 
 const ResponsiveAppBar = () => {
 
+  const dispatch=useDispatch();
+
    const isAuth=useSelector(state=>state.auth.isAuth)
+   const mode=useSelector((state)=>state.auth.mode)
 
 
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   
+  const handleloginclick=()=>{
+    if(mode=='signup'){
+      dispatch(authActions.togglemode())
+    }
+    dispatch(authActions.toggleshow())
+  }
 
+  const handlesignupclick=()=>{
+    if(mode=='signin'){
+      dispatch(authActions.togglemode())
+    }
+    dispatch(authActions.toggleshow())
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -46,6 +62,7 @@ const ResponsiveAppBar = () => {
 
   return (
     <AppBar position="static">
+      <MyBackdrop/>
       <Container maxWidth="xl" >
         <Toolbar disableGutters sx={{display:{xs:'block',lg:'flex'}}}>
           
@@ -78,10 +95,10 @@ const ResponsiveAppBar = () => {
             ))}
             </Box>
             <Box sx={{  display: { xs: 'none', lg: 'flex' } }}>
-                <MenuItem><Typography  >Log In</Typography></MenuItem>
-                <MenuItem><Typography >Sign Up</Typography></MenuItem>
+                <MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>
+                <MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>
 
-                {isAuth&&<MenuItem><Typography >logout</Typography></MenuItem>}
+                {isAuth&&<MenuItem onClick={handleclick}><Typography >logout</Typography></MenuItem>}
               </Box>
           </Box>
              
@@ -151,10 +168,10 @@ const ResponsiveAppBar = () => {
                  <Link href="/news" to="/news"><Typography textAlign="center" width="100vw">News</Typography></Link>
                   </MenuItem>
                   <Box sx={{display:'flex',justifyContent:'space-around',padding:'0 20%'}}>
-                  <MenuItem><Typography  >Log In</Typography></MenuItem>
-                  <MenuItem><Typography >Sign Up</Typography></MenuItem>
+                  {!isAuth&&<MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>}
+                  {!isAuth&&<MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>}
 
-                  {isAuth&&<MenuItem><Typography >logout</Typography></MenuItem>}
+                  {isAuth&&<MenuItem onClick={handleclick}><Typography >logout</Typography></MenuItem>}
                   </Box>
                 </Box>
               
