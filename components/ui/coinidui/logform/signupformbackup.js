@@ -84,62 +84,94 @@ export default function SignUpForm() {
     
 
     
-    const[formValues,setformValues]=useState({firstName:'', lastName:'',email:'', password:''})
-    const [error,seterror]=useState({firstName:false, lastName:false,email:false, password:false})
-    const [errorMessages,seterrorMessages]=useState({firstName:'test', lastName:'test',email:'test', password:'test'})
-    const [istouched, setistouched] = useState({firstName:false, lastName:false,email:false, password:false})
-    const [isValid, setisValid] = useState({firstName:false, lastName:false,email:false, password:false})
+    const[formValues,setformValues]=useState({firstName:{
+      name:'firstName',
+      value:'',
+      error:false,
+      errorMessage:'',
+      touched:false,
+      isvalid:false
+    },
+    lastName:{
+      name:'lastName',
+      value:'',
+      error:false,
+      errorMessage:'',
+      touched:false,
+      isvalid:false
+    },
+    email:{
+      name:'email',
+      value:'',
+      error:false,
+      errorMessage:'',
+      touched:false,
+      isvalid:false
+    },
+    password:{
+      name:'password',
+      value:'',
+      error:false,
+      errorMessage:'',
+      touched:false,
+      isvalid:false
+    },})
+    const [errorMessages,seterrorMessages]=useState({})
     
-    
+
+    //console.log(formValues)
 
 
     const onchangehandler=(e)=>{
       const {name,value}=e.target
       
         setformValues({...formValues,
-          [name]:value
-        })
-        seterror({...error,[name]:false})
-        setistouched({...istouched,[name]:true})
-
-
+          [name]:{
+            ...formValues[name],
+            value:value,
+            touched:true,
+            error:false
+          }})
     }
 
     const onfocushandler=e=>{
       const {name}=e.target
-      setistouched({...istouched,[name]:true})
       
+      setformValues({...formValues,
+        [name]:{
+          ...formValues[name],touched:true
+        }})
     }
 
     const onblurHandler=(e)=>{
       const {name,value}=e.target
       
-      if(istouched[name]==true){
+      if(formValues[name].touched==true){
              verify(name,value)
-             setistouched({...istouched,[name]:false})
-    }
-  }
+    }}
 
 
     
     function handleSubmit(event) {
     event.preventDefault();
-    Object.keys(isValid).forEach((key,index)=>{
-      
-      if(!isValid[key]){
-       
-
-        seterrorMessages((prev)=>({...prev,[key]:'Please enter your '+ key}))
-        seterror((prev)=>({...prev,[key]:true}))
+      if(formValues.firstName.value==''){
+        console.log('first name empty')
+        console.log(formValues)
+        verify('firstName','')
+        console.log(formValues)
       }
-      console.log(key)
-      console.log(error[key])
-    console.log(errorMessages[key])
-      console.log('######################')
-    })
-
-    
-
+       if(formValues.lastName.value==''){
+        console.log('lastname empty')
+        console.log(formValues)
+        verify('lastName','')
+        console.log(formValues)
+      }
+       if(formValues.email.value==''){
+        console.log('email empty')
+      }
+       if(formValues.password.value==''){
+        console.log('password empty')
+      }
   }
 
 
@@ -150,56 +182,96 @@ export default function SignUpForm() {
       console.log('verify first name or last name')
       const regex=/^[a-z ,.'-]+$/i;
       if(value==''){
-        seterrorMessages({...errorMessages,[name]:'please enter your ' +name})
-        seterror({...error,[name]:true})
-        setisValid({...isValid,[name]:false})
+        setformValues({...formValues,
+          [name]:{
+            ...formValues[name],
+            errorMessage:'You must enter a ' +name,
+            error:true,
+            touched:false,
+            isvalid:false
+          }})
   
       } else if(value.length<3||value.length>10||!regex.test(value)){
-
-        seterrorMessages({...errorMessages,[name]:name+" must contain 3 to 10 letters and can't have a special caracters or numbers"})
-        seterror({...error,[name]:true})
-        setisValid({...isValid,[name]:false})
+  
+        setformValues({...formValues,
+          [name]:{
+            ...formValues[name],
+            errorMessage:name+" must contain 3 to 10 letters and can't have a special caracters or numbers",
+            error:true,
+            touched:false
+          }})
       }else{
-        seterrorMessages({...errorMessages,[name]:''})
-        seterror({...error,[name]:false})
-        setisValid({...isValid,[name]:true})
+        setformValues({...formValues,
+          [name]:{
+            ...formValues[name],
+            error:false,
+            touched:false,
+            isvalid:true
+          }})
   
       }
-   /******************************************************************************** */
+   
   } else if(name=='email'){
     console.log(' verify email')
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if(value==''){
-      seterrorMessages({...errorMessages,[name]:'Please enter your ' +name})
-      seterror({...error,[name]:true})
-      setisValid({...isValid,[name]:false})
-
+      setformValues({...formValues,
+      [name]:{
+        ...formValues[name],
+        errorMessage:'You must enter an' +name,
+        error:true,
+        touched:false,
+        isvalid:false
+      }
+      })
     }else if (!regex.test(value)){
-      seterrorMessages({...errorMessages,[name]:"Please enter a valid " +name})
-        seterror({...error,[name]:true})
-        setisValid({...isValid,[name]:false})
+      setformValues({...formValues,
+        [name]:{
+          ...formValues[name],
+          errorMessage:'Please Enter a valid email',
+          error:true,
+          touched:false
+        }})
     }else{
-      seterrorMessages({...errorMessages,[name]:''})
-        seterror({...error,[name]:false})
-        setisValid({...isValid,[name]:true})
+      setformValues({...formValues,
+        [name]:{
+          ...formValues[name],
+          error:false,
+          touched:false,
+          isvalid:true
+        }})
     }
   }else if(name=='password'){
     console.log('verify password')
     const regex=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if(value==''){
-      seterrorMessages({...errorMessages,[name]:'Please enter your ' +name})
-      seterror({...error,[name]:true})
-      setisValid({...isValid,[name]:false})
+      setformValues({...formValues,
+      [name]:{
+        ...formValues[name],
+        errorMessage:'You must enter a' +name,
+        error:true,
+        touched:false,
+        isvalid:false
+      }
+      })
     }else if(!regex.test(value)){
-
-      seterrorMessages({...errorMessages,[name]:"must have Minimum eight characters, at least one letter and one number"})
-      seterror({...error,[name]:true})
-      setisValid({...isValid,[name]:false})
-
+      setformValues({...formValues,
+        [name]:{
+          ...formValues[name],
+          errorMessage:name+' must have Minimum eight characters, at least one letter and one number',
+          error:true,
+          touched:false,
+          isvalid:false
+        }})
     }else{
-      seterrorMessages({...errorMessages,[name]:''})
-        seterror({...error,[name]:false})
-        setisValid({...isValid,[name]:true})
+      setformValues({...formValues,
+        [name]:{
+          ...formValues[name],
+          errorMessage:'',
+          error:false,
+          touched:false,
+          isvalid:true
+        }})
     }
   
   }
@@ -243,9 +315,9 @@ export default function SignUpForm() {
               <Grid item xs={12} sm={6}>
                 
                 <TextField
-                  value={formValues.firstName}
-                  error={error.firstName}
-                  helperText={error.firstName && errorMessages.firstName}
+                  value={formValues.firstName.value}
+                  error={formValues.firstName.error}
+                  helperText={formValues.firstName.error && formValues.firstName.errorMessage}
                   name="firstName"
                   required
                   fullWidth
@@ -259,9 +331,9 @@ export default function SignUpForm() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={formValues.lastName}
-                  error={error.lastName}
-                  helperText={error.lastName && errorMessages.lastName}
+                  value={formValues.lastName.value}
+                  error={formValues.lastName.error}
+                  helperText={formValues.lastName.error && formValues.lastName.errorMessage}
                   required
                   fullWidth
                   id="lastName"
@@ -270,15 +342,15 @@ export default function SignUpForm() {
                   onChange={onchangehandler}
                   onBlur={onblurHandler}
                   onFocus={onfocushandler}
-                  autoComplete={false}
+                  
                 />
                 
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  value={formValues.email}
-                  error={error.email}
-                  helperText={error.email && errorMessages.email}
+                  value={formValues.email.value}
+                  error={formValues.email.error}
+                  helperText={formValues.email.error && formValues.email.errorMessage}
                   required
                   fullWidth
                   id="email"
@@ -287,15 +359,14 @@ export default function SignUpForm() {
                   onChange={onchangehandler}
                   onBlur={onblurHandler}
                   onFocus={onfocushandler}
-                  autoComplete={false}
                 />
                 
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  value={formValues.password}
-                  error={error.password}
-                  helperText={error.password && errorMessages.password}
+                  value={formValues.password.value}
+                  error={formValues.password.error}
+                  helperText={formValues.password.error && formValues.password.errorMessage}
                   required
                   fullWidth
                   name="password"
@@ -305,7 +376,6 @@ export default function SignUpForm() {
                   onChange={onchangehandler}
                   onBlur={onblurHandler}
                   onFocus={onfocushandler}
-                  autoComplete={false}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -338,9 +408,7 @@ export default function SignUpForm() {
 
 
 
-/*
-disabled={!(isValid.firstName&&isValid.lastName&&isValid.email&&isValid.password)}
-*/
+
 /*
 
                               if(value==''){
