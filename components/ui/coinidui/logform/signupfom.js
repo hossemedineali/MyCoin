@@ -1,26 +1,28 @@
-
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ButtonBase } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {authActions} from '../../../Store/auth'
 import { useState } from 'react';
-import { validateConfig } from 'next/dist/server/config-shared';
+
+import axios from 'axios';
+
+import { useRouter } from 'next/router'
+
 
 function Copyright(props) {
    
@@ -41,58 +43,24 @@ const theme = createTheme();
 
 
 
-const initialstate={
-  firstName:{
-    name:'firstName',
-    value:'',
-    error:false,
-    errorMessage:'',
-    touched:false,
-    isvalid:false
-  },
-  lastName:{
-    name:'lastName',
-    value:'',
-    error:false,
-    errorMessage:'',
-    touched:false,
-    isvalid:false
-  },
-  email:{
-    name:'email',
-    value:'',
-    error:false,
-    errorMessage:'',
-    touched:false,
-    isvalid:false
-  },
-  password:{
-    name:'password',
-    value:'',
-    error:false,
-    errorMessage:'',
-    touched:false,
-    isvalid:false
-  },
 
-  
-}
 
 export default function SignUpForm() {
     const dispatch=useDispatch();
 
-    
-
-    
+    const router=useRouter();
+      /* autState*/
+      const isAuth=useSelector(state=>state.auth.isAuth)
+    /* ================form  states=========================================== */
     const[formValues,setformValues]=useState({firstName:'', lastName:'',email:'', password:''})
     const [error,seterror]=useState({firstName:false, lastName:false,email:false, password:false})
-    const [errorMessages,seterrorMessages]=useState({firstName:'test', lastName:'test',email:'test', password:'test'})
+    const [errorMessages,seterrorMessages]=useState({firstName:'', lastName:'',email:'', password:''})
     const [istouched, setistouched] = useState({firstName:false, lastName:false,email:false, password:false})
     const [isValid, setisValid] = useState({firstName:false, lastName:false,email:false, password:false})
-    
+    const [formisvalid,setformisvalid]= useState(false)
     
 
-
+/*=========================onChangehandler===================================== */
     const onchangehandler=(e)=>{
       const {name,value}=e.target
       
@@ -105,6 +73,7 @@ export default function SignUpForm() {
 
     }
 
+    /* =========================== */
     const onfocushandler=e=>{
       const {name}=e.target
       setistouched({...istouched,[name]:true})
@@ -120,34 +89,60 @@ export default function SignUpForm() {
     }
   }
 
-
-    
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
     event.preventDefault();
-    Object.keys(isValid).forEach((key,index)=>{
+      const enteredFormValues={
+        firstName:event.target.firstName.value,
+        lastName:event.target.lastName.value,
+        email:event.target.email.value,
+        password:event.target.password.value
+      }
+      
+    
+     Object.keys(isValid).forEach((key,index)=>{
       
       if(!isValid[key]){
-       
-
         seterrorMessages((prev)=>({...prev,[key]:'Please enter your '+ key}))
         seterror((prev)=>({...prev,[key]:true}))
-      }
-      console.log(key)
-      console.log(error[key])
-    console.log(errorMessages[key])
-      console.log('######################')
-    })
+        setformisvalid(false)
+      }else setformisvalid (true)
+    }) 
 
-    
-
+   
+      await axios({
+        method:'post',
+        url:'/api/signUp',
+        data:enteredFormValues
+      }).then(function(response){
+        
+        dispatch(authActions.login())
+        dispatch(authActions.toggleshow())
+        router.replace('/')
+        console.log(response)
+       
+      }).catch(function (error) {
+        seterror((prev)=>({...prev,...error.response.data.err}))
+          seterrorMessages((prev)=>({...prev,...error.response.data.errorMessages}))
+        console.log(error);
+        
+      })
+        
+      
+  
   }
+
+
+
+
+
+
 
 
   const verify=(name,value)=>{
 
     if(name=='firstName'||name=='lastName'){
 
-      console.log('verify first name or last name')
+      
       const regex=/^[a-z ,.'-]+$/i;
       if(value==''){
         seterrorMessages({...errorMessages,[name]:'please enter your ' +name})
@@ -167,7 +162,7 @@ export default function SignUpForm() {
       }
    /******************************************************************************** */
   } else if(name=='email'){
-    console.log(' verify email')
+   
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if(value==''){
       seterrorMessages({...errorMessages,[name]:'Please enter your ' +name})
@@ -184,7 +179,7 @@ export default function SignUpForm() {
         setisValid({...isValid,[name]:true})
     }
   }else if(name=='password'){
-    console.log('verify password')
+    
     const regex=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if(value==''){
       seterrorMessages({...errorMessages,[name]:'Please enter your ' +name})
@@ -270,7 +265,6 @@ export default function SignUpForm() {
                   onChange={onchangehandler}
                   onBlur={onblurHandler}
                   onFocus={onfocushandler}
-                  autoComplete={false}
                 />
                 
               </Grid>
@@ -287,7 +281,6 @@ export default function SignUpForm() {
                   onChange={onchangehandler}
                   onBlur={onblurHandler}
                   onFocus={onfocushandler}
-                  autoComplete={false}
                 />
                 
               </Grid>
@@ -305,7 +298,6 @@ export default function SignUpForm() {
                   onChange={onchangehandler}
                   onBlur={onblurHandler}
                   onFocus={onfocushandler}
-                  autoComplete={false}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -335,106 +327,3 @@ export default function SignUpForm() {
     </ThemeProvider>
   );
 }
-
-
-
-/*
-disabled={!(isValid.firstName&&isValid.lastName&&isValid.email&&isValid.password)}
-*/
-/*
-
-                              if(value==''){
-                                setformValues({...formValues,
-                                  [name]:{
-                                    ...formValues[name],
-                                    errorMessage:'You must enter a ' +name,
-                                    error:true,
-                                    touched:false
-                                  }})
-                              }else if(value.length<3||value.length>10){
-                                setformValues({...formValues,
-                                  [name]:{
-                                    ...formValues[name],
-                                    errorMessage:name+' must contain 3 to 10 letters',
-                                    error:true,
-                                    touched:false
-                                  }})
-                              }
-*/
-
-
-
-
-/*
----------------------------------------------------------
-old functional onchange handler
--------------------------------------------------------------
-
-
-const onblurHandler=(e)=>{
-      const {name,value}=e.target
-      console.log(name,' blured')
-      if(formValues[name].touched==true){
-              if (name=='email'&&value==''){
-                setformValues({...formValues,
-                  [name]:{
-                    ...formValues[name],
-                    errorMessage:'You must enter an ' +name,
-                    error:true,
-                    touched:false
-                  }})
-              } else if(value==''){
-                setformValues({...formValues,
-                  [name]:{
-                    ...formValues[name],
-                    errorMessage:'You must enter a ' +name,
-                    error:true,
-                    touched:false
-                  }})
-              }
-
-              if(name=='firstName'||name=='lastName'){
-                if(value.length<3||value.length>10){
-                  setformValues({...formValues,
-                    [name]:{
-                      ...formValues[name],
-                      errorMessage:name+' must contain 3 to 10 letters',
-                      error:true,
-                      touched:false
-                    }})
-                }
-              }
-
-              if(name=='email'){
-                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-                if (!regex.test(value)){
-                  setformValues({...formValues,
-                    [name]:{
-                      ...formValues[name],
-                      errorMessage:'Please Enter a valid email',
-                      error:true,
-                      touched:false
-                    }})
-                }
-              }
-
-              if(name=='password'){
-                const regex=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-                if(!regex.test(value)){
-                  setformValues({...formValues,
-                    [name]:{
-                      ...formValues[name],
-                      errorMessage:name+' must have Minimum eight characters, at least one letter and one number',
-                      error:true,
-                      touched:false
-                    }})
-                }
-
-              }
-                            
-
-                            
-      
-    }}
-
-*/

@@ -116,7 +116,7 @@ export default function SearchInput() {
       }
 
       const onclick=()=>{
-        console.log('onclick')
+        
         setAnchorEl(null)
       }
 
@@ -127,13 +127,13 @@ export default function SearchInput() {
           setSearchResult([])
         }
 
-        console.log(event.target.value)
+        
         setInputchanged(true)
         setInputvalue(event.target.value)
          async function fetch(){
           await axios.get('https://api.coingecko.com/api/v3/search?query='+event.target.value).
           then(function(response){
-           console.log(response.data.coins)
+          
            let perm =[]
           for(let i=0;i<6;i++){
             perm.push(response.data.coins[i])
@@ -144,7 +144,7 @@ export default function SearchInput() {
 
         }
          fetch()
-         console.log(SearchResult)
+         
           
       }
 
@@ -179,7 +179,7 @@ export default function SearchInput() {
       }))
       
 
-      console.log(SearchResult)
+      
        let renderedsearch=(SearchResult&& SearchResult.map(elm=>{
         if(elm){
           return  <Box key={elm.id} sx={{height:'50px',padding:'5px 15px '}} >

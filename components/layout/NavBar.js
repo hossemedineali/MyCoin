@@ -60,6 +60,7 @@ const ResponsiveAppBar = () => {
   };
 
 
+
   return (
     <AppBar position="static">
       <MyBackdrop/>
@@ -98,7 +99,7 @@ const ResponsiveAppBar = () => {
                 <MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>
                 <MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>
 
-                {isAuth&&<MenuItem onClick={handleclick}><Typography >logout</Typography></MenuItem>}
+                {isAuth&&<MenuItem ><Typography >logout</Typography></MenuItem>}
               </Box>
           </Box>
              
@@ -171,7 +172,7 @@ const ResponsiveAppBar = () => {
                   {!isAuth&&<MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>}
                   {!isAuth&&<MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>}
 
-                  {isAuth&&<MenuItem onClick={handleclick}><Typography >logout</Typography></MenuItem>}
+                  {isAuth&&<MenuItem ><Typography >logout</Typography></MenuItem>}
                   </Box>
                 </Box>
               
