@@ -59,7 +59,8 @@ export default function handler(req, res) {
       res.status(200).json({...userCredential})
     })
     .catch((error)=>{
-      res.status(400).json({message:'some thing went wrong',error})
+      //res.status(400).json({error})
+      res.json(error)
     })
     
 

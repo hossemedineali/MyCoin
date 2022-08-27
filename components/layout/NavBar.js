@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchInput from '../input/SearchInput';
 import Link from 'next/link';
 import { Divider } from '@mui/material';
@@ -21,6 +21,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from '../Store/auth';
 import { currencyActio } from '../Store/currency';
 import MyBackdrop from '../ui/coinidui/logform/backdrop';
+import { useEffect } from 'react';
+import { Router, useRouter } from 'next/router';
+import { useState } from 'react';
 
 
 
@@ -28,15 +31,31 @@ const pages = ['Cryptocurrencies', 'NFTs', 'News'];
 const paths =['/','/nfts','/news']
 
 const ResponsiveAppBar = () => {
+ const router=useRouter();
 
   const dispatch=useDispatch();
 
    const isAuth=useSelector(state=>state.auth.isAuth)
    const mode=useSelector((state)=>state.auth.mode)
 
+   const token=useSelector((state)=>state.auth.token)
 
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if(localStorage.MycoinToken){
+       console.log('token exist : logged in ')
+       dispatch(authActions.setToeken({
+         token:localStorage.MycoinToken,
+       }))
+       dispatch(authActions.login())
+       console.log('token :',token)
+      }}
+  }, [])
+  
+
+  const [anchorElNav, setAnchorElNav] =useState(null);
+
   
   const handleloginclick=()=>{
     if(mode=='signup'){
@@ -53,12 +72,24 @@ const ResponsiveAppBar = () => {
   }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
+
+    console.log(event)
   };
  
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
+
+  const handellogout=()=>{
+    dispatch(authActions.logout())
+    dispatch(authActions.setToeken({
+      token:''
+    }))
+    localStorage.removeItem('MycoinToken')
+
+    router.replace('/')
+  }
 
 
   return (
@@ -96,15 +127,23 @@ const ResponsiveAppBar = () => {
             ))}
             </Box>
             <Box sx={{  display: { xs: 'none', lg: 'flex' } }}>
-                <MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>
-                <MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>
+                {!isAuth&&<MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>}
+                {!isAuth&&<MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>}
 
-                {isAuth&&<MenuItem ><Typography >logout</Typography></MenuItem>}
+                {false&&<MenuItem ><Typography >logout</Typography></MenuItem>}
+              <AccountCircleIcon fontSize='large' 
+                sx={{margin:'auto'}}
+              />
               </Box>
           </Box>
              
                 
           <Box sx={{display: { xs: 'flex', lg: 'none',width:'100%' } }}>
+          <AccountCircleIcon fontSize='large' 
+                sx={{margin:'auto'}}
+                onClick={handleOpenNavMenu}
+                aria-controls="menu"
+                />
 
           <Typography
             variant="h5"
@@ -130,11 +169,14 @@ const ResponsiveAppBar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+             
             >
               <MenuIcon />
             </IconButton>
                       
-
+              <Menu id="menu">
+                <Typography>1</Typography>
+              </Menu>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -172,7 +214,7 @@ const ResponsiveAppBar = () => {
                   {!isAuth&&<MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>}
                   {!isAuth&&<MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>}
 
-                  {isAuth&&<MenuItem ><Typography >logout</Typography></MenuItem>}
+                  {isAuth&&<MenuItem ><Typography onClick={handellogout}>logout</Typography></MenuItem>}
                   </Box>
                 </Box>
               

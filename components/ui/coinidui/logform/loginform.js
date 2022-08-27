@@ -11,16 +11,12 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ButtonBase, ClickAwayListener } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-
-import { useSelect } from '@mui/base';
-
-import {authActions} from '../../../Store/auth'
+import auth, {authActions} from '../../../Store/auth'
 import { useDispatch } from "react-redux";
-import Close from '@mui/icons-material/Close';
 import { useState } from 'react';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -42,23 +38,60 @@ export default function Loginform() {
 
     const[formValues,setformValues]=useState({email:'', password:''})
     const [error,seterror]=useState({email:false, password:false})
+    const [formisvalid,setformisvalid]=useState(false)
+    const [errorMessage,seterrorMessage]=useState('')
+
+   
     
- 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+    const onchangehandler=(e)=>{
+      const {name,value}=e.target
+      
+        setformValues({...formValues,
+          [name]:value
+        })
+        seterror({...error,[name]:false})
+        
 
-    Object.keys(formValues).forEach((key)=>{
-      if(formValues[key]==''){
-        seterror((prev)=>({...prev,[key]:true}))
-      }
-    })
 
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    }
+
+
+        const   handleSubmit = async (event) => {
+          event.preventDefault();
+
+          Object.keys(formValues).forEach((key)=>{
+            if(formValues[key]==''){
+              seterror((prev)=>({...prev,[key]:true}))
+              setformisvalid(false)
+            }else{
+              setformisvalid(true)
+            }
+          })
+          if(formisvalid){
+            await axios({
+              method:'POST',
+              url:'/api/signin',
+              data:formValues
+            }).then(function(response){
+              dispatch(authActions.login())
+              dispatch(authActions.setToeken({
+                token:response.data.user.stsTokenManager.accessToken
+              }))
+              localStorage.setItem('MycoinToken',response.data.user.stsTokenManager.accessToken)
+
+              dispatch(authActions.toggleshow())
+
+              console.log('success response :',response)
+              console.log('success response :',response.data.user.stsTokenManager)
+            }).catch(function(error){
+              console.log('failed response :',error.response.data.error.code)
+              if(error.response.data.error.code=='auth/invalid-email'||error.response.data.error.code=='auth/wrong-password'){
+                seterrorMessage('Invalid Email or Password ')
+              }
+            })
+          }
+          
+        };
 
 
     const onclosehandler=()=>{
@@ -94,19 +127,20 @@ export default function Loginform() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-             
+             value={formValues.email}
               margin="normal"
               required
               fullWidth
               id="email"
               label="Email Address"
               name="email"
-              autoComplete= {false}
+              autoComplete= "false"
               autoFocus
               error={error.email}
+              onChange={onchangehandler}
             />
             <TextField
-           
+              value={formValues.password}
               margin="normal"
               required
               fullWidth
@@ -116,11 +150,13 @@ export default function Loginform() {
               id="password"
               autoComplete="current-password"
               error={error.password}
+              onChange={onchangehandler}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {errorMessage&&<Typography sx={{textAlign:'center',color:'red'}}>{errorMessage}</Typography>}
             <Button
               type="submit"
               fullWidth
