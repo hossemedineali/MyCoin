@@ -71,6 +71,7 @@
           seterror({...error,[name]:false})
           setistouched({...istouched,[name]:true})
 
+          
 
       }
 
@@ -81,13 +82,22 @@
         
       }
 
-      const onblurHandler=(e)=>{
+      const  onblurHandler=async(e)=>{
         const {name,value}=e.target
-        
+        console.log(name,value)
         if(istouched[name]==true){
               verify(name,value)
               setistouched({...istouched,[name]:false})
       }
+          verify(name,value)
+      Object.keys(isValid).forEach((key,index)=>{
+        if(isValid[key]){
+          setformisvalid(true)
+        }else{setformisvalid(false)}
+      })
+
+       
+
     }
 
       async function handleSubmit(event) {
@@ -114,24 +124,32 @@
                             method:'post',
                             url:'/api/signUp',
                             data:enteredFormValues
-                          }).then(function(response){
-                            
+                          })
+                           .then(function(response){
+                            console.log('done sign up')
+                            console.log(response.data.user.uid)
                             dispatch(authActions.login())
                             dispatch(authActions.toggleshow())
                             dispatch(authActions.setToeken({
                               token:response.data.user.stsTokenManager.accessToken
                             }))
+                            dispatch(authActions.setToeken({
+                              token:response.data.user.uid
+                            }))
+                            localStorage.setItem('MYcoinuid',response.data.user.uid)
                             localStorage.setItem('MycoinToken',response.data.user.stsTokenManager.accessToken)
                             router.replace('/')
-                          }).catch(function (error) {
+                          })
+                          .catch(function (error) {
                             seterror((prev)=>({...prev,...error.response.data.err}))
                             seterrorMessages((prev)=>({...prev,...error.response.data.errorMessages}))
                             console.log(error);
-                            if(error.response.data.error.code=='auth/email-already-in-use'){
+                            if(error.response.data.code=='auth/email-already-in-use'){
                               setsubmitResponse('email already in use')
                             }
-                            
-                          }) }
+                             
+                          }) 
+                        }
                       }
 
 

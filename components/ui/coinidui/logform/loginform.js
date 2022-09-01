@@ -50,15 +50,19 @@ export default function Loginform() {
           [name]:value
         })
         seterror({...error,[name]:false})
-        
-
-
     }
+
+        const onblurhandler=(e)=>{
+            console.log(e.target.name)
+            if(formValues.email.trim().length>0||formValues.password.trim().length>0){
+              setformisvalid(true)
+            }else{setformisvalid(false)}
+        }
 
 
         const   handleSubmit = async (event) => {
           event.preventDefault();
-
+          console.log(formValues)
           Object.keys(formValues).forEach((key)=>{
             if(formValues[key]==''){
               seterror((prev)=>({...prev,[key]:true}))
@@ -78,13 +82,14 @@ export default function Loginform() {
                 token:response.data.user.stsTokenManager.accessToken
               }))
               localStorage.setItem('MycoinToken',response.data.user.stsTokenManager.accessToken)
+              localStorage.setItem('MYcoinuid',response.data.user.uid)
 
               dispatch(authActions.toggleshow())
 
               console.log('success response :',response)
               console.log('success response :',response.data.user.stsTokenManager)
             }).catch(function(error){
-              console.log('failed response :',error.response.data.error.code)
+              console.log('failed response :',error)
               if(error.response.data.error.code=='auth/invalid-email'||error.response.data.error.code=='auth/wrong-password'){
                 seterrorMessage('Invalid Email or Password ')
               }
@@ -138,6 +143,7 @@ export default function Loginform() {
               autoFocus
               error={error.email}
               onChange={onchangehandler}
+              onBlur={onblurhandler}
             />
             <TextField
               value={formValues.password}
@@ -151,6 +157,7 @@ export default function Loginform() {
               autoComplete="current-password"
               error={error.password}
               onChange={onchangehandler}
+              onBlur={onblurhandler}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

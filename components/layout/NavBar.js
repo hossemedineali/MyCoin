@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import SearchInput from '../input/SearchInput';
 import Link from 'next/link';
 import { Divider } from '@mui/material';
@@ -22,8 +22,10 @@ import { authActions } from '../Store/auth';
 import { currencyActio } from '../Store/currency';
 import MyBackdrop from '../ui/coinidui/logform/backdrop';
 import { useEffect } from 'react';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Accountcircle from './accountcircle';
+import Portfolio from './portfolio';
 
 
 
@@ -39,17 +41,24 @@ const ResponsiveAppBar = () => {
    const mode=useSelector((state)=>state.auth.mode)
 
    const token=useSelector((state)=>state.auth.token)
+   const uid=useSelector((state)=>state.auth.uid)
+
+   
 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if(localStorage.MycoinToken){
-       console.log('token exist : logged in ')
+      if(localStorage.MycoinToken||localStorage.Mycoinuid){
+       
        dispatch(authActions.setToeken({
          token:localStorage.MycoinToken,
        }))
+
+       dispatch(authActions.setuid({
+        uid:localStorage.MYcoinuid
+       }))
        dispatch(authActions.login())
-       console.log('token :',token)
+       
       }}
   }, [])
   
@@ -73,7 +82,7 @@ const ResponsiveAppBar = () => {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
 
-    console.log(event)
+   
   };
  
   const handleCloseNavMenu = () => {
@@ -81,16 +90,7 @@ const ResponsiveAppBar = () => {
   };
 
 
-  const handellogout=()=>{
-    dispatch(authActions.logout())
-    dispatch(authActions.setToeken({
-      token:''
-    }))
-    localStorage.removeItem('MycoinToken')
-
-    router.replace('/')
-  }
-
+ 
 
   return (
     <AppBar position="static">
@@ -99,17 +99,9 @@ const ResponsiveAppBar = () => {
         <Toolbar disableGutters sx={{display:{xs:'block',lg:'flex'}}}>
           
           {/**  lg logo */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            sx={{mr: 2,display: { xs: 'none', lg: 'flex' },fontFamily: 'monospace',
-            fontWeight: 700,letterSpacing: '.3rem',color: 'inherit',
-            textDecoration: 'none',}}
-              >
+          <Typography variant="h6" noWrap component="a" sx={{mr: 2,display: { xs: 'none', lg: 'flex' },fontFamily: 'monospace', fontWeight: 700,letterSpacing: '.3rem',color: 'inherit', textDecoration: 'none',}}    >
             MyCoin
           </Typography>
-
           {/*xs  and md logo*/}
       
 
@@ -120,80 +112,40 @@ const ResponsiveAppBar = () => {
                      {pages.map((page,idx) => (
               <MenuItem key={page} ><Link href={paths[idx]} key={page}><Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}
               >
-              
                 {page}
-              </Button></Link></MenuItem>
-              
+              </Button></Link></MenuItem>  
             ))}
             </Box>
+
             <Box sx={{  display: { xs: 'none', lg: 'flex' } }}>
                 {!isAuth&&<MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>}
                 {!isAuth&&<MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>}
-
-                {false&&<MenuItem ><Typography >logout</Typography></MenuItem>}
-              <AccountCircleIcon fontSize='large' 
-                sx={{margin:'auto'}}
-              />
+                
+              
+            
               </Box>
           </Box>
              
                 
           <Box sx={{display: { xs: 'flex', lg: 'none',width:'100%' } }}>
-          <AccountCircleIcon fontSize='large' 
-                sx={{margin:'auto'}}
-                onClick={handleOpenNavMenu}
-                aria-controls="menu"
-                />
+          
+           <Box sx={{display: { xs: 'flex', lg: 'none' }}}>
+          {isAuth&&<Accountcircle  />}
+          </Box>
 
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', lg: 'none' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-              paddingInline:"40%",}}>
+          <Typography variant="h5" noWrap  component="a"  sx={{  display: { xs: 'flex', lg: 'none' }, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none',width:'100%',paddingInline:"35%",}}>
             Mycoin
           </Typography>
 
               <Box >
-              <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-             
-            >
+              <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit" >
               <MenuIcon />
             </IconButton>
                       
               <Menu id="menu">
                 <Typography>1</Typography>
               </Menu>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', lg: 'none' },
-              }}
+            <Menu id="menu-appbar" anchorEl={anchorElNav} anchorOrigin={{ vertical: 'bottom', horizontal: 'left',}}keepMountedtransformOrigin={{  vertical: 'top',  horizontal: 'left',}} open={Boolean(anchorElNav)} onClose={handleCloseNavMenu} sx={{   display: { xs: 'block', lg: 'none' }, }}
             >
               
                 <Box  onClick={handleCloseNavMenu} sx={{display:'block'}}>
@@ -214,7 +166,7 @@ const ResponsiveAppBar = () => {
                   {!isAuth&&<MenuItem onClick={handleloginclick}><Typography  >Log In</Typography></MenuItem>}
                   {!isAuth&&<MenuItem onClick={handlesignupclick}><Typography >Sign Up</Typography></MenuItem>}
 
-                  {isAuth&&<MenuItem ><Typography onClick={handellogout}>logout</Typography></MenuItem>}
+                  
                   </Box>
                 </Box>
               
@@ -222,8 +174,13 @@ const ResponsiveAppBar = () => {
               </Box>
            
           </Box>
+         <Box sx={{display: { xs: 'none', lg: 'flex' }}}>
+         {isAuth&&<Accountcircle  />}
+         <Portfolio/>
+          </Box>
           <Box sx={{flexGrow:1}}>
-                <SearchInput/>
+               
+                <SearchInput type={'AppSearchBar'}/>
                 </Box>
                 
         </Toolbar>

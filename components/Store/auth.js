@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-const initialState={isAuth:false,show:false,mode:'signin',token:''};
+const initialState={isAuth:false,show:false,mode:'signin',token:'',uid:''};
 
 
 
@@ -28,6 +28,9 @@ const authSlice=createSlice({
         },
         setToeken(state,action){
             state.token=action.payload.token
+        },
+        setuid(state,action){
+            state.uid=action.payload.uid
         }
     }
 })

@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import {app,db} from "../../firebaseConfig"
 export default function handler(req, res) {
     const auth = getAuth();
     const {email,password}={...req.body};

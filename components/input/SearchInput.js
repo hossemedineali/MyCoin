@@ -63,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
-export default function SearchInput() {
+export default function SearchInput({type,AddToPortfolio}) {
       const [anchorEl, setAnchorEl] = useState(null);
       
       const [Inputchanged, setInputchanged] = useState(false);
@@ -87,16 +87,10 @@ export default function SearchInput() {
           }
           )
 
-         /*  await axios.get('https://api.coingecko.com/api/v3/coins/list?include_platform=false')
-          .then(function(response){
-              setallcoins(response.data)
-              console.log(response.data[0])
-          })
- */
         }
         fetchcoins()
       },[])
-     // console.log(Trending[0].item)
+    
 
 
 
@@ -177,6 +171,36 @@ export default function SearchInput() {
        </Box>
        
       }))
+
+
+      const RenderdtrendingForPortfolio=(
+        
+            
+        Trending.map(coin=>{
+        return  <Box key={coin.item.id} sx={{height:'50px',padding:'5px 15px '}} >
+        
+        
+        
+        <Box display={'flex'}>
+
+        
+          <Box sx={{marginRight:'auto',display:'flex' ,gap:'10px'}}>
+        <Avatar src={coin.item.large} sx={{width:'20px',height:'20px'}}/>
+        <Typography id={coin.item.id} sx={{cursor:'pointer'}} onClick={AddToPortfolio}>{coin.item.id}</Typography>
+          </Box>
+          
+          </Box>
+        
+        
+        
+       </Box>
+       
+      }
+      
+      
+      )
+      
+      )
       
 
       
@@ -202,15 +226,20 @@ export default function SearchInput() {
         }
         
       }) )
+
+      let renderedsearchForPortfolio=(SearchResult&& SearchResult.map(elm=>{
+        if(elm){
+          return  <Box   key={elm.id} sx={{height:'50px',padding:'5px 15px ',marginRight:'auto',display:'flex' ,gap:'10px'}} >
+
+                   <Avatar src={elm.thumb} sx={{width:'20px',height:'20px'}}/>
+                   <Typography id={elm.id} sx={{cursor:'pointer'}} onClick={AddToPortfolio}>{elm.id}</Typography>
+        
+       </Box>
+        }
+        
+      }) )
     
-      /* 
-      id: "bitcoin"
-large: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"
-market_cap_rank: 1
-name: "Bitcoin"
-symbol: "BTC"
-thumb: "https://assets.coingecko.com/coins/images/
-      */
+  
   return (
     
     <ClickAwayListener onClickAway={clickAway}>
@@ -228,75 +257,64 @@ thumb: "https://assets.coingecko.com/coins/images/
             onChange={hundelchange}
           />
         
-          <Popper  open={open} anchorEl={anchorEl}  id={id} 
+         {type=='AppSearchBar'&& <Popper  open={open} anchorEl={anchorEl}  id={id} 
             placement="bottom-end" 
           sx={{width:{lg:'200px',xs:'90%',md:'91%'}} }
           >
            <Box sx={{ border: 0,mr:{lg:-20}, bgcolor: 'background.paper' }}>
           
             <Box sx={{display:'flex', padding:'0 15px'}}>
-            <Typography marginRight={'auto'}>Cryptocurrencies</Typography>
-            <Typography variant='h6' sx={{cursor:'pointer',display:{lg:'none'}}} onClick={onclick}>X</Typography>
+            
+            
             </Box>
             
             <Divider/>
                  {!Inputvalue&&Renderdtrending}
                  {Inputvalue  &&renderedsearch }
+                
            </Box>
-          </Popper>
+          </Popper>}
+
+          {type=='portfolio'&&Inputchanged&&
+          <Box  open={open} anchorEl={anchorEl}  id={id} 
+            placement="bottom-end" 
+          sx={{width:{lg:'200px',xs:'90%',md:'91%'}} }
+          >
+           <Box sx={{ border: 0,mr:{lg:-20}, bgcolor: 'background.paper' }}>
+          
+            <Box sx={{display:'flex', padding:'0 15px'}}>
+            
+            
+            </Box>
+            
+            <Divider/>
+               
+                 {!Inputvalue&&<>
+                  <Typography>TrendingSearch</Typography>
+                  <Divider/>
+                 {RenderdtrendingForPortfolio}
+                  </>
+                 }
+                 {Inputvalue  &&renderedsearchForPortfolio }
+
+           </Box>
+          </Box>
+          
+          
+          }
           
         
         
         </Search>
         </ClickAwayListener>
 
-        
-      
-  
-  
-  
-    
-      
-    
   );
 }
 
-{/*
-    auto compltete before changing
-
-
-<Autocomplete
-id="Search-crypto"
-options={top100Films.map((option) => option.title)}
-renderInput={(params) => <TextField {...params} label="Search"
- />}
-/> */}
 
 
 
 
-/*
- <Autocomplete
-    id="Search-crypto"
-    options={options.map((options) => options.item.id)}
-    renderInput={(params) => <>
-      <TextField {...params} label="Search">
 
-     </TextField>
-    </>}
-  />
-
-*/
-
-
-/*
- <Autocomplete
-        id="Search-crypto"
-        options={top100Films.map((option) => option.title)}
-        renderInput={(params) => <TextField {...params} label="Search" />}
-      
-        
-      />
-*/
 
 
