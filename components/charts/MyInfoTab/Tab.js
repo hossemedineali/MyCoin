@@ -4,7 +4,7 @@ import { Box, Tab, Tabs,Grid } from "@mui/material";
 import ChartWrapper from "../ChartWrapper";
 import MarketsData from "../../coinId/markets-data";
 import PriceStatics from "../../coinId/PriceStatics";
-import ChangeTab from "../UI/changetab";
+
 
 
 
@@ -35,7 +35,7 @@ function a11yProps(index) {
     };
   }
 
-  //Overview    Markets  Converter      Historical Data
+  
 const MyInfoTab = (props) => {
     const [value, setValue] =useState(0);
 

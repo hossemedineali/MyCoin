@@ -11,10 +11,11 @@ import PortfolioOverview from "./overview";
 
 
 
-const OnePortfolio = ({portfolioid,data,updated}) => {
-
+const OnePortfolio = ({portfolioid,data}) => {
+            
         const [coinsdata,setcoinsdata]=useState([])
-        console.log('state :',coinsdata)
+        const [portfolioUpdated,satportfolioUpdated]=useState(false)
+        
     
    
         const newState=[]
@@ -22,29 +23,35 @@ const OnePortfolio = ({portfolioid,data,updated}) => {
        
         
         const fetchdata=async()=>{
-
-            for (let key in data) {
+                setcoinsdata([])
+            for (let key in data) {  
     
              
               axios.get('https://api.coingecko.com/api/v3/coins/'+key+'?sparkline=true')
               .then(response=>{
                   
-                 // console.log('===============')
-                 //console.log(response.data.market_data.market_cap.usd)
+                 
                 
                 const coinobject= {
+                    //dbdata:{key:data[key]},
                     id:response.data.id,
                     symbol:response.data.symbol,
-                    market_cap_rank:response.data.market_cap_rank_cap_rank,
+                    market_cap_rank:response.data.market_cap_rank,
                     image:response.data.image.small,
                     price:response.data.market_data.current_price.usd,
                     h1:response.data.market_data.price_change_percentage_1h_in_currency.usd,
                     h24:response.data.market_data.price_change_percentage_24h,
                     d7:response.data.market_data.price_change_percentage_7d,
-                    market_cap:response.data.market_data.market_cap.usd
+                    market_cap:response.data.market_data.market_cap.usd,
+                    id_symbol:{
+                        id:response.data.id,
+                        symbol:response.data.symbol,
+                        price:response.data.market_data.current_price.usd,
+                        db:data[key]
+                    }
                 }
                     newState.push(coinobject)
-                   // console.log(coinobject)
+                  
                       setcoinsdata((prev)=>
                         [...prev,coinobject]
                     )  
@@ -55,10 +62,12 @@ const OnePortfolio = ({portfolioid,data,updated}) => {
             }
         }
         fetchdata()
-        //setcoinsdata(newState)
-      
+        
+        satportfolioUpdated(false)
     }, [])
-    
+    const updated=()=>{
+        satportfolioUpdated(true)
+    }
         
     return ( 
 
@@ -69,8 +78,8 @@ const OnePortfolio = ({portfolioid,data,updated}) => {
         </Box>
         
         <PortfolioOverview/>
-        <CoinsTable />
-         <Coins currentdata={coinsdata}/> 
+        <CoinsTable currentdata={coinsdata} portfolioid={portfolioid} />
+          
             
         </Box>
     

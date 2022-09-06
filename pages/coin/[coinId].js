@@ -40,7 +40,7 @@ const Coin = ({coininfo}) => {
                 price_change_percentage_24h={coininfo.market_data.price_change_percentage_24h}
                  />
 
-            {false && progresspercentagehelper>0 && <ProgressBar progresspercentagehelper={progresspercentagehelper}
+            { progresspercentagehelper>0 && <ProgressBar progresspercentagehelper={progresspercentagehelper}
                 low_24h={coininfo.market_data.low_24h.usd}
                 high_24h={coininfo.market_data.high_24h.usd}
             />}
