@@ -13,14 +13,16 @@ import axios from 'axios'
 
 
 import {getDocs,  collection} from "firebase/firestore";
-import {app,db} from "../firebaseConfig"
+import {db} from "../firebaseConfig"
 import OnePortfolio from "../components/ui/coinidui/portfolios/OnePortfolio";
+import { FormText } from "react-bootstrap";
 
 
 const Portfolios_preview = (props) => {
 
-  
+    
           const uid=useSelector(state=>state.auth.uid)
+          
         const [portfoliosid,setportfoliosid]=useState([]) 
         const [portfoliosdata,setportfoliosdata]=useState([])
         const [portfoliosUpdated,setportfoliosUpdated]=useState(false)
@@ -28,8 +30,14 @@ const Portfolios_preview = (props) => {
         const open = Boolean(anchorEl);
         const [uploaded,setuploaded]=useState(false)
        
+        console.log('portfolio data from portfolio preview',portfoliosdata)
+        console.log('portfolio id from portfolio preview',portfoliosid)
+      const totalhelper=(params)=>{
+      
+      }
+      totalhelper()
 
-        
+    
        
          
         const handleClick = (event) => {
@@ -42,9 +50,6 @@ const Portfolios_preview = (props) => {
         let data=[]
       
         useEffect(() => {
-         // setportfoliosid([])
-         // setportfoliosdata([])
-         
          let newArrayid=[]
           let newArraydata=[]
              
@@ -52,16 +57,34 @@ const Portfolios_preview = (props) => {
           getDocs(collection(db,"users",id,"portfolios")).then(response=>{
             
             response.forEach((doc)=>{
-              
-              
-              const elm={id:doc.id,data:doc.data()}
-                
-              
-               newArrayid.push(elm.id)
-               newArraydata.push(elm.data)
+             
+              let elm={}
+            for(const key in doc.data()) {
+              let totalholdingincoin=0
+              let totalinvested=0
+                for(const coin in doc.data()[key]){
+                  let currentcoin=doc.data()[key][coin];
+                  if(currentcoin.type=='buy'){
+                      totalholdingincoin+=currentcoin.quantity
+                      totalinvested+=currentcoin.total
+                  }
+                  else{
+                    totalholdingincoin-=currentcoin.quantity
+                    totalinvested-=currentcoin.total 
+                  }
+                }
 
-              /* setportfoliosid(prev=>[...prev,doc.id])
-              setportfoliosdata(prev=>[...prev,elm]) */
+           
+
+                elm={id:doc.id,data:{...doc.data(),totalholdingincoin,totalinvested}}
+              
+                newArrayid.push(elm.id) 
+                newArraydata.push(elm.data)
+              }
+              
+              
+
+              
 
               setportfoliosid(newArrayid)
               setportfoliosdata(newArraydata)
@@ -93,6 +116,8 @@ const Portfolios_preview = (props) => {
                                     aria-expanded={open ? 'true' : undefined}
                                     onClick={handleClick}
                 />
+
+
                 <Menu
                             id="basic-menu"
                             anchorEl={anchorEl}
@@ -111,12 +136,12 @@ const Portfolios_preview = (props) => {
             </Box>
 
 
-            <PortfolioOverview/>
+            <PortfolioOverview />
                 
 
                             
            {<ul> {portfoliosid.map((item,idx)=>{
-              return <OnePortfolio updated={updated} key={idx} portfolioid={portfoliosid[idx]} data={portfoliosdata[idx]} /> 
+              return <OnePortfolio portfoliosUpdated updated={updated} key={idx} portfolioid={portfoliosid[idx]} data={portfoliosdata[idx]} totalhelper={totalhelper} /> 
               })
             }</ul>}
         </> 

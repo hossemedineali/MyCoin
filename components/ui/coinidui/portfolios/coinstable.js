@@ -25,27 +25,8 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
     cellClassName: 'font-tabular-nums',
   };
 
-
-
-
-
-
-        const perm={
-            d7: -5.93958,
-            h1: -0.21082,
-            h24: -1.54084,
-            id: "ripple",
-            image: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png?1605778731",
-            market_cap: 16239538028,
-            market_cap_rank: 7,
-            price: 0.326195,
-            symbol: "xrp",
-        }
-
-
-        const CoinsTable = ({currentdata,portfolioid}) => {
-          console.log(currentdata)
-
+        const CoinsTable = ({currentdata,portfolioid,updated}) => {
+        
           const [TransactionForm,setTransactionForm]=useState(false)
           const [coinForm,setcoinForm]=useState({})
 
@@ -61,17 +42,10 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
               marginleft={30}
             />
             <Typography sx={{marginLeft:'13px'}}>{params.id}</Typography>
-            {/* {params.map(x=>{
-              return <Typography>{x}</Typography>
-            })} */}
             </Box>
             </Link>
           )   },
 
-            
-
-
-        
           { field: 'price', headerName: 'price',headerAlign: 'left',align: 'left', width: 150,...usdPrice },
           {field:'h1',headerName:'1h',headerAlign: 'left',align: 'left',width:150,valueFormatter: (params) => {
             if (params.value == null) {
@@ -93,8 +67,6 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
             return `${valueFormatted} %`;
           },},
         
-          /* {field:'total_volume',headerName:'24h Volume' ,headerAlign: 'left',
-          align: 'left',width:210,...usdPrice}, */
         
           {field:'market_cap', headerName:'Mkt Cap',headerAlign: 'left',
           align: 'left', width:210, ...usdPrice},
@@ -138,7 +110,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                   color: 'red',
                 },
               }}>
-              {TransactionForm&&<AddTransactionForm TransactionForm handleClose={addTransactionFormhandler} id={coinForm.id} symbol={coinForm.symbol} price={coinForm.price} portfolioid={portfolioid}/>}
+              {TransactionForm&&<AddTransactionForm TransactionForm handleClose={addTransactionFormhandler} id={coinForm.id} symbol={coinForm.symbol} price={coinForm.price} portfolioid={portfolioid} updated={updated}/>}
               <DataGrid
               autoHeight={true}
         

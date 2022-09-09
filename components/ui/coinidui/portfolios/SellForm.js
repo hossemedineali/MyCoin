@@ -10,7 +10,7 @@ import axios from "axios";
         
         
         
-        const SellForm = ({id,symbol,price,portfolioid,handleClose}) => {
+        const SellForm = ({id,symbol,price,portfolioid,handleClose,updated}) => {
 
            
 
@@ -33,7 +33,6 @@ import axios from "axios";
             }
 
             const onChangeHanler=(e)=>{
-                        console.log(e.target.id)
                        
                         switch(e.target.id){
                             case 'Price per coin': 
@@ -46,29 +45,28 @@ import axios from "axios";
                 if(mode=='Price per coin'){
                     
                     if(e.target.id==mode){
-                        setpricePerCoin(e.target.value)
-                        settotalReceived(e.target.value*quantity)
+                        setpricePerCoin(+e.target.value)
+                        settotalReceived(+e.target.value*quantity)
                     }else{
-                        setquantity(e.target.value)
-                        settotalReceived(e.target.value*pricePerCoin)
+                        setquantity(+e.target.value)
+                        settotalReceived(+e.target.value*pricePerCoin)
                     }
                     
                 }else{
                     
                     if(e.target.id==mode){
                        
-                        settotalReceived(e.target.value)
-                        setpricePerCoin(e.target.value/quantity)
+                        settotalReceived(+e.target.value)
+                        setpricePerCoin(+e.target.value/quantity)
                     }else{
-                        setquantity(e.target.value)
-                        setpricePerCoin(totalReceived/e.target.value)
+                        setquantity(+e.target.value)
+                        setpricePerCoin(+totalReceived/e.target.value)
                     }
                 }
                 
             }
 
             const  handelSubmit= async()=>{
-                console.log(totalReceived=='',totalReceived<0,isNaN(totalReceived))
                 if(totalReceived==''){
                    
                     settotalReceivederror({iserror:true,message:'please enter a positive number'})
@@ -77,6 +75,7 @@ import axios from "axios";
                     }else if(quantity<=0||isNaN(quantity)){
                          setquantityerror({iserror:true,message:'please enter a positif number'}) }
                 else{
+                    updated()
                     handleClose()
                     const values={
                         type:'sell',
@@ -94,7 +93,6 @@ import axios from "axios";
                         url:'/api/addTransaction',
                         data:values
                     }).then(response=>{
-                        console.log(response.data)
                     })
                 }
                    

@@ -11,29 +11,69 @@ import PortfolioOverview from "./overview";
 
 
 
-const OnePortfolio = ({portfolioid,data}) => {
+const OnePortfolio = ({portfolioid,data,totalhelper,updated,portfoliosUpdated}) => {
+
+   console.log(data)
             
         const [coinsdata,setcoinsdata]=useState([])
-        const [portfolioUpdated,satportfolioUpdated]=useState(false)
         
-    
-   
-        const newState=[]
-    useEffect(() => {
+        const [portfolioStatics,setportfolioStatics]=useState({})
+        
+        
+      
+
+        const somemath=()=>{
+           
+        }
+        somemath()
+
+
        
+
+    useEffect(() => {
+        setcoinsdata([])
         
         const fetchdata=async()=>{
-                setcoinsdata([])
+       
+            let totalportfolioinvested=0
+            let totalportfolioholding=0
             for (let key in data) {  
-    
+
+                console.log('key')
+                let totalcoinholding=0
+                let totalInvestedonecoin=0
+                if(data[key].length>0){
+                        
+                    data[key].map(item=>{
+                        if(item.type=="buy"){
+                            totalcoinholding+=item.quantity
+                            totalInvestedonecoin+= item.quantity*item.pricePerCoin
+                        }if(item.type=='sell'){
+                            totalcoinholding-=item.quantity
+                            totalInvestedonecoin-=item.quantity*item.pricePerCoin
+                        }
+                         
+                    })  
+                    
+                    }
+                    totalportfolioinvested+=totalInvestedonecoin;
              
-              axios.get('https://api.coingecko.com/api/v3/coins/'+key+'?sparkline=true')
+              axios.get('https://api.coingecko.com/api/v3/coins/'+key+'?sparkline=false')
               .then(response=>{
-                  
-                 
+                  totalportfolioholding+=totalcoinholding*response.data.market_data.current_price.usd
+                    let currentPrice=response.data.market_data.current_price.usd
+                    let totalcoinholdingvaluation=totalcoinholding*currentPrice
+                   // console.log(key,'totalcoinholding',totalcoinholding,'totalcoinholdingvaluation',totalcoinholdingvaluation,'totalInvestedonecoin',totalInvestedonecoin,'price',currentPrice,'totalportfolioholding',totalportfolioholding,'totalportfolioinvested',totalportfolioinvested)
+                    let coinpercentageofportfolio=totalcoinholdingvaluation/totalportfolioholding
+
+                   somemath(totalcoinholding,totalcoinholdingvaluation,totalInvestedonecoin,currentPrice,totalportfolioholding,totalportfolioinvested)
+
                 
                 const coinobject= {
                     //dbdata:{key:data[key]},
+
+                    totalonecoinholding:totalcoinholding,
+                    totalcoinholdingvaluation,
                     id:response.data.id,
                     symbol:response.data.symbol,
                     market_cap_rank:response.data.market_cap_rank,
@@ -50,7 +90,7 @@ const OnePortfolio = ({portfolioid,data}) => {
                         db:data[key]
                     }
                 }
-                    newState.push(coinobject)
+                    
                   
                       setcoinsdata((prev)=>
                         [...prev,coinobject]
@@ -63,11 +103,11 @@ const OnePortfolio = ({portfolioid,data}) => {
         }
         fetchdata()
         
-        satportfolioUpdated(false)
-    }, [])
-    const updated=()=>{
-        satportfolioUpdated(true)
-    }
+        portfoliosUpdated
+    }, [portfoliosUpdated,data])
+
+    
+   
         
     return ( 
 
@@ -78,7 +118,7 @@ const OnePortfolio = ({portfolioid,data}) => {
         </Box>
         
         <PortfolioOverview/>
-        <CoinsTable currentdata={coinsdata} portfolioid={portfolioid} />
+        {Object.keys(data).length>0&&<CoinsTable updated={updated} currentdata={coinsdata} portfolioid={portfolioid} />}
           
             
         </Box>

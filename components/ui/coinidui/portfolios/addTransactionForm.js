@@ -45,7 +45,7 @@ function a11yProps(index) {
   }
 
 
-export default function AddTransactionForm({TransactionForm,handleClose,id,symbol,price,portfolioid}) {
+export default function AddTransactionForm({TransactionForm,handleClose,id,symbol,price,portfolioid,updated}) {
 
     
   const [open, setOpen] = useState(false);
@@ -76,11 +76,11 @@ export default function AddTransactionForm({TransactionForm,handleClose,id,symbo
 
            <TabPanel value={value} index={0}>
 
-                <BuyForm id={id} symbol={symbol} price={price} portfolioid={portfolioid} handleClose={handleClose}/>
+                <BuyForm id={id} symbol={symbol} price={price} portfolioid={portfolioid} handleClose={handleClose} updated={updated}/>
            </TabPanel>
            
            <TabPanel value={value} index={1}>
-                <SellForm id={id} symbol={symbol} price={price} portfolioid={portfolioid} handleClose={handleClose}/>
+                <SellForm id={id} symbol={symbol} price={price} portfolioid={portfolioid} handleClose={handleClose} updated={updated}/>
            </TabPanel>
           
         </Box>

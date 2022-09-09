@@ -12,7 +12,7 @@ import SearchCoin from "./searchcoin";
 import AddNewPortfolio from "./AddNewPortfolio";
    
 
-    const Actions = ({type='all',updated,portfolioid}) => {
+    const Actions = ({type='all',updated,portfolioid,portfoliosUpdated}) => {
 
         const [anchorEl, setAnchorEl] = useState(null);
         const open = Boolean(anchorEl);
