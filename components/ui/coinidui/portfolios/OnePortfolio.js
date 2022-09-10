@@ -11,116 +11,23 @@ import PortfolioOverview from "./overview";
 
 
 
-const OnePortfolio = ({portfolioid,data,totalhelper,updated,portfoliosUpdated}) => {
+const OnePortfolio = ({data,updated}) => {
 
-   console.log(data)
-            
-        const [coinsdata,setcoinsdata]=useState([])
-        
-        const [portfolioStatics,setportfolioStatics]=useState({})
-        
-        
-      
-
-        const somemath=()=>{
-           
-        }
-        somemath()
-
-
-       
-
-    useEffect(() => {
-        setcoinsdata([])
-        
-        const fetchdata=async()=>{
-       
-            let totalportfolioinvested=0
-            let totalportfolioholding=0
-            for (let key in data) {  
-
-                console.log('key')
-                let totalcoinholding=0
-                let totalInvestedonecoin=0
-                if(data[key].length>0){
-                        
-                    data[key].map(item=>{
-                        if(item.type=="buy"){
-                            totalcoinholding+=item.quantity
-                            totalInvestedonecoin+= item.quantity*item.pricePerCoin
-                        }if(item.type=='sell'){
-                            totalcoinholding-=item.quantity
-                            totalInvestedonecoin-=item.quantity*item.pricePerCoin
-                        }
-                         
-                    })  
-                    
-                    }
-                    totalportfolioinvested+=totalInvestedonecoin;
-             
-              axios.get('https://api.coingecko.com/api/v3/coins/'+key+'?sparkline=false')
-              .then(response=>{
-                  totalportfolioholding+=totalcoinholding*response.data.market_data.current_price.usd
-                    let currentPrice=response.data.market_data.current_price.usd
-                    let totalcoinholdingvaluation=totalcoinholding*currentPrice
-                   // console.log(key,'totalcoinholding',totalcoinholding,'totalcoinholdingvaluation',totalcoinholdingvaluation,'totalInvestedonecoin',totalInvestedonecoin,'price',currentPrice,'totalportfolioholding',totalportfolioholding,'totalportfolioinvested',totalportfolioinvested)
-                    let coinpercentageofportfolio=totalcoinholdingvaluation/totalportfolioholding
-
-                   somemath(totalcoinholding,totalcoinholdingvaluation,totalInvestedonecoin,currentPrice,totalportfolioholding,totalportfolioinvested)
-
-                
-                const coinobject= {
-                    //dbdata:{key:data[key]},
-
-                    totalonecoinholding:totalcoinholding,
-                    totalcoinholdingvaluation,
-                    id:response.data.id,
-                    symbol:response.data.symbol,
-                    market_cap_rank:response.data.market_cap_rank,
-                    image:response.data.image.small,
-                    price:response.data.market_data.current_price.usd,
-                    h1:response.data.market_data.price_change_percentage_1h_in_currency.usd,
-                    h24:response.data.market_data.price_change_percentage_24h,
-                    d7:response.data.market_data.price_change_percentage_7d,
-                    market_cap:response.data.market_data.market_cap.usd,
-                    id_symbol:{
-                        id:response.data.id,
-                        symbol:response.data.symbol,
-                        price:response.data.market_data.current_price.usd,
-                        db:data[key]
-                    }
-                }
-                    
-                  
-                      setcoinsdata((prev)=>
-                        [...prev,coinobject]
-                    )  
-
-              }).catch(err=>{
-                
-              })
-            }
-        }
-        fetchdata()
-        
-        portfoliosUpdated
-    }, [portfoliosUpdated,data])
-
-    
-   
-        
+    //console.log(data)
+           // console.log((data[1]))
     return ( 
 
         <Box sx={{margin:{md:'4rem 3rem',xs:'2rem 1rem' }}}>
         <Box sx={{display:'flex' }}>
-            <Typography sx={{marginRight:'auto'}}>{portfolioid}</Typography>
-            <Actions type={''} updated={updated} portfolioid={portfolioid}/>
+        
+            <Typography sx={{marginRight:'auto'}}>{data[0]}</Typography>
+            <Actions type={''} updated={updated} portfolioid={data[0]}/>
         </Box>
         
-        <PortfolioOverview/>
-        {Object.keys(data).length>0&&<CoinsTable updated={updated} currentdata={coinsdata} portfolioid={portfolioid} />}
+        <PortfolioOverview />
+       {/*  {Object.keys(data).length>0&&<CoinsTable updated={updated} currentdata={coinsdata} portfolioid={portfolioid} />} */}
           
-            
+       <CoinsTable updated={updated} currentdata={data[1].coins} portfolioid={data[0]} />
         </Box>
     
      );

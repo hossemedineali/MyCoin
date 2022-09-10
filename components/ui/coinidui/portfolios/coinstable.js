@@ -27,6 +27,31 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
         const CoinsTable = ({currentdata,portfolioid,updated}) => {
         
+          let array=[]
+          Object.entries(currentdata).map((item,idx)=>{
+            
+            let percentagepnl=item[1].coincurrentvaluation>item[1].totalspentoncoin?+(item[1].coincurrentvaluation/item[1].totalspentoncoin):-(item[1].totalspentoncoin/item[1].coincurrentvaluation)
+
+            array.push({
+              ...item[1].coindata,
+              holding:{
+               // pnl:item[1].pnl,
+              coinPercentageOfPortfolio:item[1].coinPercentageOfPortfolio,
+              totalcoinholding:item[1].totalcoinholding,
+              coincurrentvaluation:item[1].coincurrentvaluation,
+              symbol:item[1].coindata.symbol
+              },
+              pnl:{
+                pnl:item[1].pnl.toFixed(2),
+                percentagepnl:percentagepnl.toFixed(2)
+              }
+            })
+
+          })
+          console.log(array)
+          //const data=Object.values(currentdata)
+         // console.log(data)
+        
           const [TransactionForm,setTransactionForm]=useState(false)
           const [coinForm,setcoinForm]=useState({})
 
@@ -71,17 +96,26 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
           {field:'market_cap', headerName:'Mkt Cap',headerAlign: 'left',
           align: 'left', width:210, ...usdPrice},
 
-          {field:'holdings', headerName:'holdings',headerAlign:'left',align: 'left', width:210 },
-          {field:'id_symbol', headerName:'PNL',headerAlign:'left',align: 'left', width:110 ,
+          {field:'holding', headerName:'holdings',headerAlign:'left',align: 'left', width:210 ,
+          renderCell:(params)=>(<Box sx={{width:'100%'}}>
+          <Box sx={{display:'flex',justifyContent:'space-between'}}>
+            <Typography>${params.value.coincurrentvaluation.toFixed(2)} ({(params.value.coinPercentageOfPortfolio*100).toFixed(2)}%)</Typography>
+          </Box>
+          <Box  sx={{display:'flex',justifyContent:'space-between'}}>
+            <Typography>{params.value.totalcoinholding} {params.value.symbol}</Typography>
+          </Box>
+      </Box>),...usdPrice
+      },
+          {field:'pnl', headerName:'PNL',headerAlign:'left',align: 'left', width:110 ,
               renderCell:(params)=>(<Box sx={{width:'100%'}}>
                                         <Box sx={{display:'flex',justifyContent:'space-between'}}>
-                                         <Typography>+100$</Typography>
+                                         {params.value.pnl>0?<Typography color={'green'}>+{params.value.pnl}$</Typography>:<Typography color={'red'}>-{params.value.pnl}$</Typography>}
                                          <Tooltip  title="Add transaction" placement="left" arrow>
                                           <AddIcon  onClick={()=>addTransactionFormhandler(params.value.id,params.value.symbol,params.value.price)} sx={{cursor:'pointer',color:'blue'}}/>
                                           </Tooltip>
                                         </Box>
                                         <Box  sx={{display:'flex',justifyContent:'space-between'}}>
-                                        <Typography>+10%</Typography>
+                                        {params.value.percentagepnl>0?<Typography color={'green'}>+{params.value.percentagepnl}%</Typography>:<Typography color={'red'}>-{params.value.percentagepnl}%</Typography>}
                                         <Tooltip  title="View transactions" placement="left" arrow>
                                         <ArrowForwardIosIcon  sx={{cursor:'pointer',color:'blue'}}/>
                                         </Tooltip>
@@ -111,13 +145,13 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                 },
               }}>
               {TransactionForm&&<AddTransactionForm TransactionForm handleClose={addTransactionFormhandler} id={coinForm.id} symbol={coinForm.symbol} price={coinForm.price} portfolioid={portfolioid} updated={updated}/>}
-              <DataGrid
+              {array.length>0&&<DataGrid
               autoHeight={true}
-        
+             
               hideFooterPagination
               hideFooter
-              hideFooterSelectedRowCount
-                rows={currentdata}
+              
+                rows={array}
                 columns={columns}
                 initialState={{ pinnedColumns: { left: ['id'] } }}
                 getCellClassName={(params) => {
@@ -130,7 +164,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                   
                 }}
                 
-              />
+              />}
                 </Box>
              );
         }
