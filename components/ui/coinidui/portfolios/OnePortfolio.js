@@ -13,8 +13,8 @@ import PortfolioOverview from "./overview";
 
 const OnePortfolio = ({data,updated}) => {
 
-    //console.log(data)
-           // console.log((data[1]))
+         
+
     return ( 
 
         <Box sx={{margin:{md:'4rem 3rem',xs:'2rem 1rem' }}}>
@@ -24,7 +24,7 @@ const OnePortfolio = ({data,updated}) => {
             <Actions type={''} updated={updated} portfolioid={data[0]}/>
         </Box>
         
-        <PortfolioOverview />
+        <PortfolioOverview totalBalance={data[1].statistics.portfoliototalbalance} h24change={data[1].statistics.portfolio24hchange} pnl={data[1].statistics.portfolioPnl}/>
        {/*  {Object.keys(data).length>0&&<CoinsTable updated={updated} currentdata={coinsdata} portfolioid={portfolioid} />} */}
           
        <CoinsTable updated={updated} currentdata={data[1].coins} portfolioid={data[0]} />

@@ -7,7 +7,7 @@ import {app,db} from "../../firebaseConfig"
 export default async function handler(req,res){
  
   const {id}={...req.body}
-    let gecko={}
+    
     let arrayforallPortfolioschart=[]
     let object ={}
     let totalBalance=0
@@ -28,7 +28,8 @@ export default async function handler(req,res){
       for(const key in doc.data()){
         let totalcoinholding=0;
         let totalspentoncoin=0;
-      
+        let totalCost=0;
+        let totalProceeds=0
         const currentcoin=doc.data()[key]
         for(const item in currentcoin){
           //array.push(item)
@@ -36,9 +37,11 @@ export default async function handler(req,res){
           if(currentcoin[item].type=='buy'){
             totalcoinholding+=currentcoin[item].quantity
             totalspentoncoin+=currentcoin[item].quantity*currentcoin[item].pricePerCoin
+            totalCost+=currentcoin[item].quantity*currentcoin[item].pricePerCoin
           }else{
             totalcoinholding-=currentcoin[item].quantity
             totalspentoncoin-=currentcoin[item].quantity*currentcoin[item].pricePerCoin
+            totalProceeds+=currentcoin[item].quantity*currentcoin[item].pricePerCoin
           }
           
         }
@@ -57,7 +60,8 @@ export default async function handler(req,res){
     let portfoliototalbalance=0
     let portfolioPnl=0
     for(const coin in object[key]['coins']){
-      
+      console.log('coin for fetching data',coin)
+      let testobj={}
         await axios.get('https://api.coingecko.com/api/v3/coins/'+coin).then(response=>{
           const coindata={
             id:response.data.id,
@@ -76,7 +80,7 @@ export default async function handler(req,res){
                         
                     }
           }
-          
+
           
          arrayforallPortfolioschart.push({'coin':coin,quantity:object[key]['coins'][coin].quantity,price:coindata.price})
           let coincurrentvaluation=object[key]['coins'][coin].totalcoinholding*coindata.price
@@ -90,13 +94,21 @@ export default async function handler(req,res){
           object[key]['statistics']={...object[key]['statistics'],portfoliototalbalance,portfolioPnl,portfolioPnlPercentage}
 
           
+
         })
         
       }
-      totalBalance+=object[key]['statistics'].portfoliototalbalance
-      totalPnl+=object[key]['statistics'].portfolioPnl
+      //
+      if(object[key]['statistics'].portfoliototalbalance){
+
+        totalBalance+=object[key]['statistics'].portfoliototalbalance
+      }
+      if(object[key]['statistics'].portfolioPnl){
+
+        totalPnl+=object[key]['statistics'].portfolioPnl
+      }
    }
- 
+   
   
   }).then(
 
@@ -113,7 +125,10 @@ export default async function handler(req,res){
       }
       let portfolioPercentageOfAllPortfolios=object[key]['statistics'].portfoliototalbalance/totalBalance
       object[key]['statistics']={...object[key]['statistics'],portfolio24hchange,portfolioPercentageOfAllPortfolios}
-      allPortfoliosChange24h+=object[key]['statistics'].portfolio24hchange*object[key]['statistics'].portfolioPercentageOfAllPortfolios
+    //
+      if(object[key]['statistics'].portfolio24hchange*object[key]['statistics'].portfolioPercentageOfAllPortfolios){
+        allPortfoliosChange24h+=object[key]['statistics'].portfolio24hchange*object[key]['statistics'].portfolioPercentageOfAllPortfolios
+      }
    }
 
    
@@ -124,6 +139,7 @@ export default async function handler(req,res){
     }
    }
   ).then(()=>{
+    console.log(AllportfoliosStatistics)
     res.status(200).json({object,AllportfoliosStatistics,arrayforallPortfolioschart})
    
     

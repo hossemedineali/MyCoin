@@ -29,14 +29,14 @@ function Paginate(props) {
     return (<>
         <Stack spacing={2}>
       <Typography>Page: {props.posts}</Typography>
-      <Pagination count={count} page={props.page} onChange={props.handleChange} />
+      <Pagination count={count} page={props.page} onChange={()=>props.handleChange(count)} />
     </Stack>
     </>  );
 }
 
 
 
-export async function getServerSideProps(){
+/* export async function getServerSideProps(){
     //fetch data
     const res = await fetch('https://api.coingecko.com/api/v3/coins/list')
     const posts = await res.json()
@@ -47,7 +47,7 @@ export async function getServerSideProps(){
         }
     };
 }
-
+ */
   export default  Paginate;
 
 

@@ -43,15 +43,16 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
               },
               pnl:{
                 pnl:item[1].pnl.toFixed(2),
-                percentagepnl:percentagepnl.toFixed(2)
+                percentagepnl:percentagepnl.toFixed(2),
+                id:item[1].coindata.id,
+                symbol:item[1].coindata.symbol,
+                price:item[1].coindata.price,
               }
             })
 
           })
-          console.log(array)
-          //const data=Object.values(currentdata)
-         // console.log(data)
-        
+          
+       
           const [TransactionForm,setTransactionForm]=useState(false)
           const [coinForm,setcoinForm]=useState({})
 
@@ -115,10 +116,14 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                                           </Tooltip>
                                         </Box>
                                         <Box  sx={{display:'flex',justifyContent:'space-between'}}>
-                                        {params.value.percentagepnl>0?<Typography color={'green'}>+{params.value.percentagepnl}%</Typography>:<Typography color={'red'}>-{params.value.percentagepnl}%</Typography>}
+                                        {params.value.percentagepnl>0?<Typography color={'green'}>+{!isNaN(params.value.percentagepnl)?params.value.percentagepnl:0}%</Typography>:<Typography color={'red'}>-{!isNaN(params.value.percentagepnl)?params.value.percentagepnl:0}%</Typography>}
+                                        <Link href={'/portfolios/'+portfolioid+'/'+params.value.id}>
+
                                         <Tooltip  title="View transactions" placement="left" arrow>
-                                        <ArrowForwardIosIcon  sx={{cursor:'pointer',color:'blue'}}/>
+                                        <ArrowForwardIosIcon   sx={{cursor:'pointer',color:'blue'}}/>
                                         </Tooltip>
+                                        </Link>
+                                        
                                         </Box>
                                     </Box>)}
                                     
@@ -155,9 +160,9 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                 columns={columns}
                 initialState={{ pinnedColumns: { left: ['id'] } }}
                 getCellClassName={(params) => {
-                  if (params.field === 'price_change_percentage_1h_in_currency' ||
-                   params.field === 'price_change_percentage_24h'||
-                   params.field === 'price_change_percentage_7d_in_currency'
+                  if (params.field === 'h1' ||
+                   params.field === 'h24'||
+                   params.field === 'd7'
                     ) {
                         return params.value >= 0?  'positive' : 'negative' ;
                   }

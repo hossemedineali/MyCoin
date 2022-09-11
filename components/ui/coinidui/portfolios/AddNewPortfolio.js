@@ -74,7 +74,7 @@ const Modalstyle = {
                     updated()
                    })
                    .catch((error)=>{
-                   console.log(error)
+                  
                     if(error.response.data.isError){
                         setisError(true)
                     }
@@ -83,11 +83,7 @@ const Modalstyle = {
             }
 
 
-            const AddToPortfolio=(e)=>{
-                    console.log(e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode)
-                    //console.log(e.target)
-                    setOpen(false)
-            }
+        
             const handleSnackClose = () => {
    
                 setsnackopen(false);

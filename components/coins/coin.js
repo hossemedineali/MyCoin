@@ -8,13 +8,13 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
 
-const currencyFormatter = new Intl.NumberFormat('en-US', {
+export const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0
   });
   
-  const usdPrice = {
+  export const usdPrice = {
     type: 'number',
     
     valueFormatter: ({ value }) => currencyFormatter.format(value),

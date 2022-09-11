@@ -1,19 +1,29 @@
     import { Box, Paper, Typography } from "@mui/material";
 
-    const PortfolioOverview = (props) => {
+    export const currencyFormatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+      });
+
+    
+
+    const PortfolioOverview = ({totalBalance,h24change,pnl}) => {
+        
+       
         return ( 
         <Box>
              <Box sx={{display:'flex',width:{md:'50%' ,xs:'80%'},margin:{md:'0',xs:'2rem auto'},gap:'1rem', flexDirection:{sm:'row',xs:'column'}}} >
                 <Paper sx={{padding:'0.5rem' ,textAlign:'center'}}>
-                    <Typography>§0.00</Typography>
+                    <Typography>{currencyFormatter.format(totalBalance)}</Typography>
                     <Typography>Total Balance</Typography>
                 </Paper>
                 <Paper sx={{padding:'0.5rem',textAlign:'center'}}>
-                    <Typography>§0.00</Typography>
-                    <Typography>24h Portfolio Change (+0%)</Typography>
+                    <Typography>{currencyFormatter.format(h24change)}</Typography>
+                    <Typography>24h Portfolio Change ({currencyFormatter.format((pnl/totalBalance)*100)})</Typography>
                 </Paper>
                 <Paper sx={{padding:'0.5rem',textAlign:'center'}}>
-                    <Typography>§0.00</Typography>
+                    <Typography color={pnl>0?'green':'red'}>{currencyFormatter.format(pnl)}</Typography>
                     <Typography>Total Profit Loss (-)</Typography>
                 </Paper>
             </Box>

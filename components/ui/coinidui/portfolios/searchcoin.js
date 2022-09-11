@@ -27,6 +27,7 @@ const Modalstyle = {
 
     const SearchCoin = ({portfolioid,updated}) => {
 
+
         const uid=useSelector(state=>state.auth.uid)
         
         const [open, setOpen] = useState(false);
@@ -46,7 +47,7 @@ const Modalstyle = {
               updated()
               setOpen(false)
               handleClose()
-                    console.log(e.target.id)
+                    
                     const uid =localStorage.getItem('MYcoinuid')
                     const coin=e.target.id
                     const param={
@@ -54,7 +55,7 @@ const Modalstyle = {
                       coin,
                       portfolioid
                     }
-                    console.log(param)
+                   
                     await axios({
                       method:'POST',
                       url:'/api/AddCoinToPortfolio',
@@ -63,6 +64,8 @@ const Modalstyle = {
                         coin,
                         uid
                       }
+                    }).then((response)=>{
+                     
                     })
                     
             }
@@ -81,7 +84,7 @@ const Modalstyle = {
                   >
                     <Box sx={Modalstyle}>
                         <Typography>Search your favorite Coin</Typography>
-                        <SearchInput type={'portfolio'} AddToPortfolio={AddToPortfolio} />
+                        <SearchInput type={'portfolio'}  AddToPortfolio={AddToPortfolio} />
                     </Box>
                  </Modal>
                   
