@@ -2,21 +2,21 @@ import {  Menu, MenuItem, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useEffect, useState } from "react";
-//import Actions from "../../../components/ui/coinidui/portfolios/Actions";
+
 import Actions from "../../components/ui/coinidui/portfolios/Actions"
 import PortfolioOverview from "../../components/ui/coinidui/portfolios/overview";
 
-   import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
+import { useRouter } from 'next/router'
 
-import {getDocs,  collection} from "firebase/firestore";
-import {db} from "../../firebaseConfig"
 import OnePortfolio from "../../components/ui/coinidui/portfolios/OnePortfolio";
 import axios from "axios";
-import { onValue } from "firebase/database";
+
 
 
 const Portfolios_preview = (props) => {
-
+          const router=useRouter();
+          
     
           const uid=useSelector(state=>state.auth.uid)
          
@@ -48,7 +48,10 @@ const Portfolios_preview = (props) => {
           
             
           let id=(localStorage.getItem('MYcoinuid'))
-          
+          if(id==null){
+              router.replace('/login')
+            return
+          }
           const dataforapi={
             id:id,
           }
@@ -58,7 +61,7 @@ const Portfolios_preview = (props) => {
             data:dataforapi
             
           }).then(response=>{
-            console.log('response data',response.data)
+          
             setAllportfoliosStatistics(response.data.AllportfoliosStatistics)
             setportfoliosdata(response.data.object)
           }).catch(err=>{
@@ -91,39 +94,17 @@ const Portfolios_preview = (props) => {
          
         {!coingekolimit&& <Box>
             <Box sx={{margin:{xs:'1rem',md:'2rem'},display:'flex',flexDirection:{xs:'column',sm:'row'},justifyContent:'space-between'}}>
-                <Box sx={{display:'flex'}}>
+                
                 <Typography>All Portfolios</Typography>
-                <KeyboardArrowDownIcon
-                    sx={{ fontSize: 30 }}
-                                    id="basic-button"
-                                    aria-controls={open ? 'basic-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClick}
-                />
-
-
-                <Menu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                            }}
-                        >
-                            <MenuItem onClick={handleClose}>My Portfolio</MenuItem>
-                            <MenuItem onClick={handleClose}>Test</MenuItem>   
-                        </Menu>
-                </Box>
-
+              
+              
                 <Actions type={'all'} updated={updated}/>
             </Box>
 
 
-            <PortfolioOverview totalBalance={AllportfoliosStatistics.totalBalance} h24change={AllportfoliosStatistics.allPortfoliosChange24h}  pnl={AllportfoliosStatistics.totalPnl}   />
+           {AllportfoliosStatistics&& <PortfolioOverview totalBalance={AllportfoliosStatistics.totalBalance} h24change={AllportfoliosStatistics.allPortfoliosChange24h}  pnl={AllportfoliosStatistics.totalPnl}   />}
                 
-           { Object.entries(portfoliosdata).map((item)=>{
+           {portfoliosdata&& Object.entries(portfoliosdata).map((item)=>{
             return <OnePortfolio updated={updated} key={item[0]} data={item}/>
            })}
 

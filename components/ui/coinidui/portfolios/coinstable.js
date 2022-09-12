@@ -11,6 +11,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from "react";
 import AddTransactionForm from "./addTransactionForm";
+import ShowTransactions from "./transactions/showTransactions";
+
+import axios from 'axios'
+
+//((((((((((((((((()))))))))))))))))
+import { doc, setDoc,addDoc,collection, updateDoc} from "firebase/firestore";
+import {app,db} from "../../../../firebaseConfig"
+//(((((((((((((((((((((())))))))))))))))))))))
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -26,9 +34,24 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   };
 
         const CoinsTable = ({currentdata,portfolioid,updated}) => {
-        
+
+         
+
+          
+          const [ShowTransactionsModal, setShowTransactionsModal] = useState(false)
+          const [idtoshowstransaction, setidtoshowstransaction] = useState({})
+
+          const OpenShowTransactionsModal=(coinid)=>{
+              setShowTransactionsModal(true)
+              setidtoshowstransaction(prev=>coinid)
+              }
+
+          const CloseShowTransactions=()=>{
+            setShowTransactionsModal(false)
+          }
+
           let array=[]
-          Object.entries(currentdata).map((item,idx)=>{
+          Object.entries(currentdata).map((item)=>{
             
             let percentagepnl=item[1].coincurrentvaluation>item[1].totalspentoncoin?+(item[1].coincurrentvaluation/item[1].totalspentoncoin):-(item[1].totalspentoncoin/item[1].coincurrentvaluation)
 
@@ -117,12 +140,12 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                                         </Box>
                                         <Box  sx={{display:'flex',justifyContent:'space-between'}}>
                                         {params.value.percentagepnl>0?<Typography color={'green'}>+{!isNaN(params.value.percentagepnl)?params.value.percentagepnl:0}%</Typography>:<Typography color={'red'}>-{!isNaN(params.value.percentagepnl)?params.value.percentagepnl:0}%</Typography>}
-                                        <Link href={'/portfolios/'+portfolioid+'/'+params.value.id}>
+                                        
 
                                         <Tooltip  title="View transactions" placement="left" arrow>
-                                        <ArrowForwardIosIcon   sx={{cursor:'pointer',color:'blue'}}/>
+                                        <ArrowForwardIosIcon onClick={()=>OpenShowTransactionsModal(params.value.id)}  sx={{cursor:'pointer',color:'blue'}}/>
                                         </Tooltip>
-                                        </Link>
+                                       
                                         
                                         </Box>
                                     </Box>)}
@@ -134,6 +157,70 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
            setcoinForm({id,symbol,price})
            setTransactionForm(!TransactionForm)
           }
+
+
+
+         /*  const deleteTransaction=async({coinId,transactioId})=>{
+            let formateddata={}
+            let newdata={}
+            let id=localStorage.getItem('MYcoinuid')
+            
+
+            Object.keys(currentdata).forEach(key=>{
+              formateddata[key]=currentdata[key]['db']
+            })
+            
+
+             Object.keys(formateddata).forEach(key=>{
+              
+              newdata[key]=[]
+              if(key!=coinId){
+                Object.values(formateddata[key]).forEach(elm=>{
+                  newdata[key].push(elm)
+                  
+                })
+                
+              }else{
+                Object.values(formateddata[key]).forEach(elm=>{
+                  if(elm.id!=transactioId){
+                    newdata[key].push(elm)
+                  }
+                })
+                //console.log(formateddata[key])
+              }
+            }) 
+
+
+
+            const docToUpdateref=doc(db,"users",uid,"portfolios",portfolioid)
+             
+            updateDoc(docToUpdateref,coin,{})
+    
+
+            await setDoc(collection(db,id,'portfolios',portfolioid),newdata)
+            .then(response=>{
+              console.log(response)
+            }).catch(error=>{
+        
+              console.log(error)
+            })
+
+           console.log(newdata)
+           await axios({
+              method:'post',
+              url:'/api/daleteTransaction',
+              data:{newdata,
+              portfolioid,
+              id
+
+              }
+           }).then(response=>{
+            console.log(response)
+           })
+ 
+          
+          }
+           */
             
             return ( 
                 <Box
@@ -149,8 +236,11 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
                   color: 'red',
                 },
               }}>
+
+               {ShowTransactionsModal&& <ShowTransactions  open={ShowTransactionsModal} handleClose={CloseShowTransactions} data={currentdata[idtoshowstransaction]} portfolioid={portfolioid} updated={updated}/>}
               {TransactionForm&&<AddTransactionForm TransactionForm handleClose={addTransactionFormhandler} id={coinForm.id} symbol={coinForm.symbol} price={coinForm.price} portfolioid={portfolioid} updated={updated}/>}
-              {array.length>0&&<DataGrid
+              {array.length>0&&
+              <DataGrid
               autoHeight={true}
              
               hideFooterPagination

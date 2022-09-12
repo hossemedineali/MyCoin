@@ -1,15 +1,13 @@
-import { Box, Button, ClickAwayListener, Snackbar, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, TextField, Typography } from "@mui/material";
 import Modal from '@mui/material/Modal';
 
 import axios from 'axios'
 import { useSelector } from "react-redux";
 
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+
 
 import { useState } from "react";
-import SearchInput from "../../../input/SearchInput";
-import { update } from "firebase/database";
+
 
 
 const Modalstyle = {

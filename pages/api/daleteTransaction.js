@@ -1,27 +1,26 @@
-import axios from "axios";
-import {getDocs, doc, setDoc,addDoc,updateDoc,arrayUnion,arrayRemove,deleteDoc ,deleteField, collection} from "firebase/firestore";
-import {app,db,doc} from "../../firebaseConfig"
-
-
+import { red } from "@mui/material/colors";
+import { updateDoc,doc} from "firebase/firestore";
+import {app,db} from "../../firebaseConfig"
 
 export default async function handler(req,res){
- 
-  const {id}={...req.body}
-    let gecko={}
-    let arrayforallPortfolioschart=[]
-    let object ={}
-    let totalBalance=0
-    let totalPnl=0
-    let allPortfoliosChange24h=0
-    let AllportfoliosStatistics={}
-  await getDocs(doc(db,"users",id,"portfolios")).then(async (response)=>{
-     
-  
+    let {id,portfolioid,coin,coindata}={...req.body}
     
-  })
-  
+    
+    const docToUpdateref=doc(db,"users",id,"portfolios",portfolioid)
+    await updateDoc(docToUpdateref,coin,coindata)
+    .then(response=>{
+      res.status(200).json({response})
+    })
+    .catch(error=>{
+      res.status(400).json({error})
+    })
+    
+   
+   
+    // res.status(200).json({...req.body})
+    
+   
 }
-
 
 
 

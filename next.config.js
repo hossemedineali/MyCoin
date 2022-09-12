@@ -4,7 +4,8 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = {nextConfig,
+module.exports = {
+  nextConfig,
   
   images: {
     domains: ['assets.coingecko.com','www.coingecko.com'],
@@ -12,5 +13,19 @@ module.exports = {nextConfig,
   experimental: {
     images: {
       unoptimized: true,
-    }}
+    }},
+    
 }
+
+
+/*
+async redirects() {
+      return [
+        {
+          source: '/',
+          destination: '/',
+          permanent: true,
+        },
+      ]
+    },
+*/

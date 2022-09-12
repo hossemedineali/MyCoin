@@ -45,7 +45,7 @@
 
 
 
-  export default function SignUpForm() {
+  export default function SignUpForm({type='backdrop'}) {
       const dispatch=useDispatch();
 
       const router=useRouter();
@@ -129,7 +129,11 @@
                             console.log('done sign up')
                             console.log(response.data.user.uid)
                             dispatch(authActions.login())
-                            dispatch(authActions.toggleshow())
+                              if(mode=='backdrop'){
+                                dispatch(authActions.toggleshow())
+
+                              }
+
                             dispatch(authActions.setToeken({
                               token:response.data.user.stsTokenManager.accessToken
                             }))
@@ -233,9 +237,9 @@
                           <Container component="main" 
                           sx={{width:{xs:'90vw',md:'50vw',lg:'35vw'},position:'relative'}}
                           >
-                          <CloseIcon 
+                         {type=='backdrop'&& <CloseIcon 
                             onClick={onclosehandler}
-                            sx={{display:{xs:'flex',md:'none'},position:'absolute',right:15,top:-25,cursor:'pointer'}}/>
+                            sx={{display:{xs:'flex',md:'none'},position:'absolute',right:15,top:-25,cursor:'pointer'}}/>}
                             <CssBaseline />
                             <Box
                               sx={{

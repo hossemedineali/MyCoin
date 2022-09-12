@@ -1,6 +1,5 @@
 
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -12,11 +11,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ButtonBase } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 import CloseIcon from '@mui/icons-material/Close';
-import auth, {authActions} from '../../../Store/auth'
+import  {authActions} from '../../../Store/auth'
 import { useDispatch } from "react-redux";
 import { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 function Copyright(props) {
   return (
@@ -33,7 +35,8 @@ function Copyright(props) {
 
 
 
-export default function Loginform() {
+export default function Loginform( {type='backdrop'}) {
+  const router=useRouter()
     const  dispatch=useDispatch()
 
     const[formValues,setformValues]=useState({email:'', password:''})
@@ -83,8 +86,12 @@ export default function Loginform() {
               }))
               localStorage.setItem('MycoinToken',response.data.user.stsTokenManager.accessToken)
               localStorage.setItem('MYcoinuid',response.data.user.uid)
-
-              dispatch(authActions.toggleshow())
+              if(type=='backdrop'){
+                
+                dispatch(authActions.toggleshow())
+              }else{
+                router.replace('/')
+              }
 
               console.log('success response :',response)
               console.log('success response :',response.data.user.stsTokenManager)
@@ -109,20 +116,21 @@ export default function Loginform() {
     }
   return (
     
+
     
       <Container component="main" 
        sx={{width:{xs:'90vw',md:'50vw',lg:'35vw'},position:'relative'}}>
+        {type=='redirect'&&<Stack sx={{ width: '100%' }} spacing={2}>
+      <Alert severity="error">Please Log In to continue</Alert>
+    </Stack>}
         <CssBaseline />
-        <CloseIcon 
+       
+       {type=='backdrop'&& <CloseIcon 
         onClick={onclosehandler}
-        sx={{display:{xs:'flex',md:'none'},position:'absolute',right:15,top:-25,cursor:'pointer'}}/>
+        sx={{display:{xs:'flex',md:'none'},position:'absolute',right:15,top:-25,cursor:'pointer'}}/>}
+       
         <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+          sx={{marginTop: 8,  display: 'flex',  flexDirection: 'column',alignItems: 'center', }}
         >
           
             <Typography variant='h4'>Welcom</Typography>

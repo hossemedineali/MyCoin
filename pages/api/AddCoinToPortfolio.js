@@ -3,11 +3,11 @@ import { updateDoc,doc} from "firebase/firestore";
 import {app,db} from "../../firebaseConfig"
 
 export default async function handler(req,res){
-    let {uid,portfolioid,coin}={...req.body}
+    let {uid,portfolioid,coin,coindata}={...req.body}
     
     
     const docToUpdateref=doc(db,"users",uid,"portfolios",portfolioid)
-     updateDoc(docToUpdateref,coin,{})
+     updateDoc(docToUpdateref,coin,[])
     
    
    

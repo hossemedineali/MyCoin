@@ -13,6 +13,7 @@ import PortfolioOverview from "./overview";
 
 const OnePortfolio = ({data,updated}) => {
 
+    
          
 
     return ( 
@@ -21,13 +22,13 @@ const OnePortfolio = ({data,updated}) => {
         <Box sx={{display:'flex' }}>
         
             <Typography sx={{marginRight:'auto'}}>{data[0]}</Typography>
-            <Actions type={''} updated={updated} portfolioid={data[0]}/>
+            <Actions type={''} updated={updated} portfolioid={data[0]} data={data[1].coins} />
         </Box>
         
         <PortfolioOverview totalBalance={data[1].statistics.portfoliototalbalance} h24change={data[1].statistics.portfolio24hchange} pnl={data[1].statistics.portfolioPnl}/>
        {/*  {Object.keys(data).length>0&&<CoinsTable updated={updated} currentdata={coinsdata} portfolioid={portfolioid} />} */}
           
-       <CoinsTable updated={updated} currentdata={data[1].coins} portfolioid={data[0]} />
+       <CoinsTable updated={updated} currentdata={data[1].coins} portfolioid={data[0].coins} />
         </Box>
     
      );

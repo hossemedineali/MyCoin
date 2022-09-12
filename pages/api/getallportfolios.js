@@ -7,7 +7,11 @@ import {app,db} from "../../firebaseConfig"
 export default async function handler(req,res){
  
   const {id}={...req.body}
+  
+   // res.redirect(307, '/')
     
+ 
+ 
     let arrayforallPortfolioschart=[]
     let object ={}
     let totalBalance=0
@@ -16,7 +20,7 @@ export default async function handler(req,res){
     let AllportfoliosStatistics={}
   await getDocs(collection(db,"users",id,"portfolios")).then(async (response)=>{
      
-  
+  console.log(response)
     
     response.forEach((doc)=>{
       let portfoliototalinvested=0
@@ -49,7 +53,7 @@ export default async function handler(req,res){
         
         object[portfolioName]['statistics']={...object[portfolioName]['statistics'],portfoliototalinvested}
    
-        object[portfolioName]['coins'][key]={'db':{...currentcoin},totalcoinholding,totalspentoncoin}
+        object[portfolioName]['coins'][key]={'db':{...currentcoin},totalcoinholding,totalspentoncoin,totalCost,totalProceeds}
       }
 
     })
@@ -60,7 +64,7 @@ export default async function handler(req,res){
     let portfoliototalbalance=0
     let portfolioPnl=0
     for(const coin in object[key]['coins']){
-      console.log('coin for fetching data',coin)
+     
       let testobj={}
         await axios.get('https://api.coingecko.com/api/v3/coins/'+coin).then(response=>{
           const coindata={
@@ -139,11 +143,20 @@ export default async function handler(req,res){
     }
    }
   ).then(()=>{
-    console.log(AllportfoliosStatistics)
+   
     res.status(200).json({object,AllportfoliosStatistics,arrayforallPortfolioschart})
    
     
+  }).catch(err=>{
+    res.status(400).json({err})
+    //res.redirect(307, '/')
   })
+
+  
+ 
+
+
+   
   /* .catch(err=>{
     //res.status(400).json({err})
   }) */
