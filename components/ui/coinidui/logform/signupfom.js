@@ -83,12 +83,13 @@
       }
 
       const  onblurHandler=async(e)=>{
+        console.log('blur')
         const {name,value}=e.target
-        console.log(name,value)
-        if(istouched[name]==true){
+        
+         if(istouched[name]==true){
               verify(name,value)
               setistouched({...istouched,[name]:false})
-      }
+      } 
           verify(name,value)
       Object.keys(isValid).forEach((key,index)=>{
         if(isValid[key]){
@@ -101,6 +102,7 @@
     }
 
       async function handleSubmit(event) {
+        console.log('submit')
       event.preventDefault();
         const enteredFormValues={
           firstName:event.target.firstName.value,
@@ -108,56 +110,64 @@
           email:event.target.email.value,
           password:event.target.password.value
         }
+
+
+        async function fetch  (){
+            console.log('fetching ...')
+          await axios({
+            method:'post',
+            url:'/api/signUp',
+            data:enteredFormValues
+          })
+           .then((response)=>{
+           
+            dispatch(authActions.login())
+              if(type=='backdrop'){
+                dispatch(authActions.toggleshow())
+
+              }
+
+            dispatch(authActions.setToeken({
+              token:response.data.user.stsTokenManager.accessToken
+            }))
+            dispatch(authActions.setToeken({
+              token:response.data.user.uid
+            }))
+            localStorage.setItem('MYcoinuid',response.data.user.uid)
+            localStorage.setItem('MycoinToken',response.data.user.stsTokenManager.accessToken)
+            router.replace('/')
+          }).catch( (error) =>{
+            console.log('error')
+            console.log(error)
+            if(error.response.data.code=='auth/email-already-in-use'){
+              setsubmitResponse('email already in use')
+            }
+             
+          }) 
+        }
         
       
-      Object.keys(isValid).forEach((key,index)=>{
+      Object.keys(formValues).forEach((key,index)=>{
         
-        if(!isValid[key]){
+        if(formValues[key]==''){
+          console.log('submit error while looping throw form values')
           seterrorMessages((prev)=>({...prev,[key]:'Please enter your '+ key}))
           seterror((prev)=>({...prev,[key]:true}))
           setformisvalid(false)
-        }else setformisvalid (true)
+        }else {
+          console.log('while looping throw vormvalues all is ok')
+          setformisvalid (true)
+          
+        }
       }) 
+      fetch()
 
-      if (formisvalid){
-                          await axios({
-                            method:'post',
-                            url:'/api/signUp',
-                            data:enteredFormValues
-                          })
-                           .then(function(response){
-                            console.log('done sign up')
-                            console.log(response.data.user.uid)
-                            dispatch(authActions.login())
-                              if(mode=='backdrop'){
-                                dispatch(authActions.toggleshow())
-
-                              }
-
-                            dispatch(authActions.setToeken({
-                              token:response.data.user.stsTokenManager.accessToken
-                            }))
-                            dispatch(authActions.setToeken({
-                              token:response.data.user.uid
-                            }))
-                            localStorage.setItem('MYcoinuid',response.data.user.uid)
-                            localStorage.setItem('MycoinToken',response.data.user.stsTokenManager.accessToken)
-                            router.replace('/')
-                          })
-                          .catch(function (error) {
-                            seterror((prev)=>({...prev,...error.response.data.err}))
-                            seterrorMessages((prev)=>({...prev,...error.response.data.errorMessages}))
-                            console.log(error);
-                            if(error.response.data.code=='auth/email-already-in-use'){
-                              setsubmitResponse('email already in use')
-                            }
-                             
-                          }) 
-                        }
+                
                       }
 
 
 
+                      //form  verification  function
                       const verify=(name,value)=>{
 
                         if(name=='firstName'||name=='lastName'){

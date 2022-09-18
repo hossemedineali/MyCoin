@@ -55,7 +55,7 @@ export default async function handler(req, res) {
   }else {
 
     await createUserWithEmailAndPassword(auth,data.email,data.password)
-    .then((userCredential)=>{
+    .then(async(userCredential)=>{
         const user={
                   uid:userCredential.user.uid,
                   firstName:req.body.firstName,
@@ -63,9 +63,14 @@ export default async function handler(req, res) {
                   
         }
     
-       setDoc(doc(db,"users",userCredential.user.uid,"portfolios",'My Portfolio'),{}); // last active
+     await  setDoc(doc(db,"users",userCredential.user.uid,"portfolios",'My Portfolio'),{})
+     // last active
         //setDoc(doc(db,userCredential.user.uid,"portfolios","My portfolio"),{})
-      res.status(200).json({...userCredential,test:user})
+     .then(()=>{
+
+       res.status(200).json({...userCredential,test:user})
+    })
+      
     })
     .catch((error)=>{
       //res.status(400).json({error})
