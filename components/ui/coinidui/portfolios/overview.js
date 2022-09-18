@@ -15,15 +15,15 @@
         <Box>
              <Box sx={{display:'flex',width:{md:'50%' ,xs:'80%'},margin:{md:'0',xs:'2rem auto'},gap:'1rem', flexDirection:{sm:'row',xs:'column'}}} >
                 <Paper sx={{padding:'0.5rem' ,textAlign:'center'}}>
-                    <Typography>{currencyFormatter.format(totalBalance)}</Typography>
+                    <Typography>{totalBalance?currencyFormatter.format(totalBalance):''}</Typography>
                     <Typography>Total Balance</Typography>
                 </Paper>
                 <Paper sx={{padding:'0.5rem',textAlign:'center'}}>
-                    <Typography>{currencyFormatter.format(h24change)}</Typography>
-                    <Typography>24h Portfolio Change ({currencyFormatter.format((pnl/totalBalance)*100)})</Typography>
+                    <Typography>{h24change?currencyFormatter.format(h24change):''}</Typography>
+                    <Typography>24h Portfolio Change {((pnl/totalBalance)*100)? (currencyFormatter.format((pnl/totalBalance)*100)):''}</Typography>
                 </Paper>
                 <Paper sx={{padding:'0.5rem',textAlign:'center'}}>
-                    <Typography color={pnl>0?'green':'red'}>{currencyFormatter.format(pnl)}</Typography>
+                    <Typography color={pnl>0?'green':'red'}>{pnl?currencyFormatter.format(pnl):''}</Typography>
                     <Typography>Total Profit Loss (-)</Typography>
                 </Paper>
             </Box>

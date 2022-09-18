@@ -78,8 +78,16 @@ export default function SearchInput({type,AddToPortfolio}) {
 
       
 
-      useEffect(()=>{
+
+
+
+
+      const focushundler=(event)=>{
+        setAnchorEl(anchorEl ? null : event.currentTarget)
         async function fetchcoins(){
+
+          console.log("fetching trending  data from search input")
+
           await axios.get('https://api.coingecko.com/api/v3/search/trending').
           then(function(response){
             if (response.status==200)
@@ -89,13 +97,6 @@ export default function SearchInput({type,AddToPortfolio}) {
 
         }
         fetchcoins()
-      },[])
-    
-
-
-
-      const focushundler=(event)=>{
-        setAnchorEl(anchorEl ? null : event.currentTarget)
       }
 
       

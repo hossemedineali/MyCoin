@@ -11,7 +11,7 @@ export default async function handler(req,res){
    // res.redirect(307, '/')
     
  
- 
+  let test={}
     let arrayforallPortfolioschart=[]
     let object ={}
     let totalBalance=0
@@ -23,6 +23,7 @@ export default async function handler(req,res){
   console.log(response)
     
     response.forEach((doc)=>{
+      test[doc.id]=doc.data()
       let portfoliototalinvested=0
       let portfolioName=doc.id
       object[portfolioName]={statistics:{},coins:{}}
@@ -64,7 +65,7 @@ export default async function handler(req,res){
     let portfoliototalbalance=0
     let portfolioPnl=0
     for(const coin in object[key]['coins']){
-     
+      
       let testobj={}
         await axios.get('https://api.coingecko.com/api/v3/coins/'+coin).then(response=>{
           const coindata={
@@ -86,7 +87,7 @@ export default async function handler(req,res){
           }
 
           
-         arrayforallPortfolioschart.push({'coin':coin,quantity:object[key]['coins'][coin].quantity,price:coindata.price})
+         arrayforallPortfolioschart.push({'coin':coin,quantity:object[key]['coins'][coin].totalcoinholding,price:coindata.price})
           let coincurrentvaluation=object[key]['coins'][coin].totalcoinholding*coindata.price
           let pnl=coincurrentvaluation-object[key]['coins'][coin].totalspentoncoin
           portfoliototalbalance+=coincurrentvaluation;
@@ -144,7 +145,7 @@ export default async function handler(req,res){
    }
   ).then(()=>{
    
-    res.status(200).json({object,AllportfoliosStatistics,arrayforallPortfolioschart})
+    res.status(200).json({object,AllportfoliosStatistics,arrayforallPortfolioschart,test})
    
     
   }).catch(err=>{

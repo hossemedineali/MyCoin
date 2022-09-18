@@ -12,6 +12,8 @@ import SearchCoin from "./searchcoin";
 import AddNewPortfolio from "./AddNewPortfolio";
 import { Modal, Typography,Snackbar } from "@mui/material";
 
+import { pink ,brown} from '@mui/material/colors';
+
 import CloseIcon from '@mui/icons-material/Close';
 
 import axios from 'axios'
@@ -32,7 +34,7 @@ const style = {
   };
 
 
-    const Actions = ({type='all',updated,portfolioid,data,}) => {
+    const Actions = ({type='all',updated,portfolioid,data,toggleShowDoughnut,iconcolor}) => {
       //  console.log('===========    Actions     ==========')
       //  console.log('data',data)
       //  console.log('portfolioid',portfolioid)
@@ -100,12 +102,12 @@ const style = {
             const id=localStorage.getItem('MYcoinuid')
             setopenReset(false)
 
-            let newdata=[]
+            let newdata={}
            
             Object.keys(data).forEach(key=>{
-                newdata.push(key)
+                newdata[key]=[]
             })
-
+            console.log(newdata)
             await axios({
                 method:'POST',
                 url:'/api/resetportfolio',
@@ -116,11 +118,13 @@ const style = {
                 }
             })
             .then(response=>{
-                console.log(response)
+                //console.log(response)
+                updated()
+
             })
-           /*  .catch(error=>{
-                console.log(error)
-            }) */
+            .catch(error=>{
+              //
+            })  
 
             
         }
@@ -131,10 +135,11 @@ const style = {
         
             return ( <Box id='actions' sx={{display:'flex',gap:'0.2rem',}}>
 
-
-                <VisibilityOffIcon sx={{ fontSize: 30 }}/>
-                <DonutLargeIcon sx={{ fontSize: 30 }}/>
+                 <VisibilityOffIcon sx={{ fontSize: 30 }}/>
+                <DonutLargeIcon  sx={{ fontSize: 30, color:iconcolor?'brown':'disabled'}} onClick={toggleShowDoughnut}/>
+                
                 {type!='all'&&<Box>
+               
                         <MoreVertIcon
                                 sx={{ fontSize: 30 }}
                                 id="basic-button"
@@ -214,10 +219,17 @@ const style = {
                 {type!='all'&&<SearchCoin updated={updated} portfolioid={portfolioid}/>
                 
                 }
-                {type=='all'&&<AddNewPortfolio updated={updated}/>}
+                {type=='all'&& <>
+                
+
+                
+                
+                <AddNewPortfolio updated={updated}/></>}
 
                
             </Box> );
         }
         
         export default Actions;
+
+        color: brown[600]

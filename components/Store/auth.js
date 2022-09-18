@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-const initialState={isAuth:false,show:false,mode:'signin',token:'',uid:''};
+const initialState={isAuth:false,show:false,mode:'signin',token:'',uid:'',isverified:false};
 
 
 
@@ -10,11 +10,15 @@ const authSlice=createSlice({
     
     initialState,
     reducers:{
-        login(state){
+        login(state,action){
             state.isAuth=true
+           
         },
         logout(state){
             state.isAuth=false
+        },
+        setverified(state,action){
+            state.isverified=action.payload.isverified
         },
         toggleshow(state){
             state.show=!state.show

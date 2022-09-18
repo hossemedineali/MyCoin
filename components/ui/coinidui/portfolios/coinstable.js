@@ -35,7 +35,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
         const CoinsTable = ({currentdata,portfolioid,updated}) => {
 
-         
+      
 
           
           const [ShowTransactionsModal, setShowTransactionsModal] = useState(false)
@@ -160,67 +160,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
 
 
-         /*  const deleteTransaction=async({coinId,transactioId})=>{
-            let formateddata={}
-            let newdata={}
-            let id=localStorage.getItem('MYcoinuid')
-            
-
-            Object.keys(currentdata).forEach(key=>{
-              formateddata[key]=currentdata[key]['db']
-            })
-            
-
-             Object.keys(formateddata).forEach(key=>{
-              
-              newdata[key]=[]
-              if(key!=coinId){
-                Object.values(formateddata[key]).forEach(elm=>{
-                  newdata[key].push(elm)
-                  
-                })
-                
-              }else{
-                Object.values(formateddata[key]).forEach(elm=>{
-                  if(elm.id!=transactioId){
-                    newdata[key].push(elm)
-                  }
-                })
-                //console.log(formateddata[key])
-              }
-            }) 
-
-
-
-            const docToUpdateref=doc(db,"users",uid,"portfolios",portfolioid)
-             
-            updateDoc(docToUpdateref,coin,{})
-    
-
-            await setDoc(collection(db,id,'portfolios',portfolioid),newdata)
-            .then(response=>{
-              console.log(response)
-            }).catch(error=>{
-        
-              console.log(error)
-            })
-
-           console.log(newdata)
-           await axios({
-              method:'post',
-              url:'/api/daleteTransaction',
-              data:{newdata,
-              portfolioid,
-              id
-
-              }
-           }).then(response=>{
-            console.log(response)
-           })
- 
-          
-          }
-           */
+         
             
             return ( 
                 <Box

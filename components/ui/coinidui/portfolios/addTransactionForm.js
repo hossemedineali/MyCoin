@@ -46,7 +46,8 @@ function a11yProps(index) {
 
 
 export default function AddTransactionForm({TransactionForm,handleClose,id,symbol,price,portfolioid,updated}) {
-
+  
+  console.log('add transaction form (portfolio id ) :',portfolioid)
     
   const [open, setOpen] = useState(false);
   const [value, setValue] =useState(0);

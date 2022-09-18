@@ -13,7 +13,7 @@ import axios from "axios";
         const BuyForm = ({id,symbol,price,portfolioid,handleClose,updated}) => {
 
            
-
+            console.log('buy form (portfolio id ) :',portfolioid)
             const[mode,setmode]=useState('Price per coin')
             
             
@@ -94,7 +94,9 @@ import axios from "axios";
                         url:'/api/addTransaction',
                         data:values
                     }).then(response=>{
-
+                        console.log(response)
+                    }).catch(error=>{
+                        console.log(error)
                     })
                 }
                    

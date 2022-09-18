@@ -56,7 +56,7 @@ export default function Loginform( {type='backdrop'}) {
     }
 
         const onblurhandler=(e)=>{
-            console.log(e.target.name)
+            
             if(formValues.email.trim().length>0||formValues.password.trim().length>0){
               setformisvalid(true)
             }else{setformisvalid(false)}
@@ -65,7 +65,7 @@ export default function Loginform( {type='backdrop'}) {
 
         const   handleSubmit = async (event) => {
           event.preventDefault();
-          console.log(formValues)
+         
           Object.keys(formValues).forEach((key)=>{
             if(formValues[key]==''){
               seterror((prev)=>({...prev,[key]:true}))
@@ -80,7 +80,10 @@ export default function Loginform( {type='backdrop'}) {
               url:'/api/signin',
               data:formValues
             }).then(function(response){
+              console.log(response.data.user.emailVerified
+                )
               dispatch(authActions.login())
+             dispatch(authActions.setverified({isverified:response.data.user.emailVerified}))
               dispatch(authActions.setToeken({
                 token:response.data.user.stsTokenManager.accessToken
               }))

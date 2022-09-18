@@ -176,7 +176,7 @@ const ResponsiveAppBar = () => {
           </Box>
          <Box sx={{display: { xs: 'none', lg: 'flex' }}}>
          {isAuth&&<Accountcircle  />}
-         <Portfolio/>
+         <Box sx={{margin:'auto',cursor:'pointer'}}>{isAuth&& <Link href={'/portfolios/portfolios_preview'}><Typography>Portfolios</Typography></Link>}</Box>
           </Box>
           <Box sx={{flexGrow:1}}>
                

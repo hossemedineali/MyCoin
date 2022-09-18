@@ -13,8 +13,8 @@ export default async function handler (req,res){
       }
     const docToUpdateref=doc(db,"users",uid,"portfolios",portfolioid)
 
-    //res.status(200).json({type,quantity,pricePerCoin,uid,total,portfolioid,id})
-    await updateDoc(docToUpdateref,{[coinid]:arrayUnion(updatecoin)},{ merge: true })
+    //res.status(200).json({message:'ok',...req.body})
+     await updateDoc(docToUpdateref,{[coinid]:arrayUnion(updatecoin)},{ merge: true })
     .then(response=>{
         res.status(200).json({type,quantity,pricePerCoin,uid,total,portfolioid,coinid,response})
     })

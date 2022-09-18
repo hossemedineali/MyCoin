@@ -2,8 +2,10 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
+import Link from 'next/link';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { useDispatch } from "react-redux";
 import auth, { authActions } from '../Store/auth';
 import { useState } from 'react';
@@ -60,7 +62,7 @@ const dispatch=useDispatch()
         }}
       >
         <MenuItem onClick={handleClose}>Login and Security</MenuItem>
-        <MenuItem onClick={handleClose}>Watch list</MenuItem>
+        <MenuItem onClick={handleClose}><Link href={'/portfolios/portfolios_preview'}><Typography>Portfolios</Typography></Link></MenuItem>
         <MenuItem onClick={handellogout}>Logout</MenuItem>
       </Menu>
     </div>

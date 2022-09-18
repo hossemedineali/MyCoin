@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Coins from '../components/coins/coin';
@@ -15,27 +16,34 @@ import Scroll from '../components/ui/coinidui/scroll';
   
   
   
-  const handleChange = (event, value) => {
-    setcurrentPage(value);
+  const handleChange = (target,value) => {
+
+
+    
+
+   setcurrentPage(value);
+    
   };
 
 
 
   useEffect(() => {
-    async function fetchdata(){
-     const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page='+currentpage+'&sparkline=false&price_change_percentage=1h%2C24h%2C7d')
-     const coins = await res.json()
-
-     coins.forEach((element) => {
-      element.coinid = element.market_cap_rank
-    });
-
     
-     setcurrentdata(coins)
-     
-     
+    const fetchdata=async()=>{
+      await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page='+currentpage+'&sparkline=false&price_change_percentage=1h%2C24h%2C7d')
+      .then(response =>{
+        
+  
+        let coins=response.data
+        coins.forEach((element) => {
+          element.coinid = element.market_cap_rank
+        });
+        setcurrentdata(response.data)
+      })
+      .catch(error=>{
+        //
+      })
     }
-    
     fetchdata()
 
     
@@ -89,3 +97,54 @@ export function GetServerSideProps(){
 
 
 export default  Home;
+
+
+
+
+// this code is after tryiing to enhance
+
+/*
+useEffect(() => {
+
+    const fetchdata=async()=>{
+      await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page='+currentpage+'&sparkline=false&price_change_percentage=1h%2C24h%2C7d')
+      .then(response =>{
+        console.log(response.data)
+  
+        let coins=response.data
+        coins.forEach((element) => {
+          element.coinid = element.market_cap_rank
+        });
+        setcurrentdata(response.data)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    }
+    fetchdata()
+     
+    
+   },[currentpage]);
+*/
+
+
+
+// code before enhancment 
+
+/*
+async function fetchdata(){
+     const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page='+currentpage+'&sparkline=false&price_change_percentage=1h%2C24h%2C7d')
+     const coins = await res.json()
+
+     coins.forEach((element) => {
+      element.coinid = element.market_cap_rank
+    });
+
+    
+     setcurrentdata(coins)
+     
+     
+    }
+    
+    fetchdata()
+*/

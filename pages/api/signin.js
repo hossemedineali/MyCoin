@@ -9,6 +9,7 @@ export default function handler(req, res) {
         // Signed in 
         const user = userCredential.user;
         res.status(200).json({...userCredential})
+        console.log(userCredential)
       })
       .catch((error) => {
         res.status(400).json({error})
