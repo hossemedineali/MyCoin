@@ -101,7 +101,7 @@ const Modalstyle = {
                     <Box sx={Modalstyle}>
                         <Typography>Add New Portfolio</Typography>
                         <TextField placeholder="Portfolio Name" value={InputValue} sx={{width:'100%'}} onChange={handelchange}></TextField>
-                        {isError&&<Typography color={'red'}>Can't be empty</Typography>}
+                        {isError&&<Typography color={'red'}>Can t be empty</Typography>}
                         <Box sx={{display:'flex',flexDirection:{xs:'column',sm:'row'},gap:'0.3rem',justifyContent:'space-between',margin:'0.5rem'}}>
                             <Button onClick={oncancel} variant="outlined">Cancel</Button>
                             <Button onClick={onconfirm}  variant="contained">Confirm</Button>

@@ -336,7 +336,7 @@
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Typography  variant='p'color={'#999999'}>
-                    " Already have an account? <ButtonBase onClick={togglemodehandler}>Sign in</ButtonBase>"
+                    Already have an account? <ButtonBase onClick={togglemodehandler}>Sign in</ButtonBase>
                   </Typography>
                   
                 </Grid>
