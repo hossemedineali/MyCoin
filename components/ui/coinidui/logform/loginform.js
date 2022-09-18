@@ -191,7 +191,7 @@ export default function Loginform( {type='backdrop'}) {
               </Grid>
               <Grid item>
                 <Typography  variant='p'>
-                  "Don't have an account? <ButtonBase onClick={togglemodehandler}>sign Up</ButtonBase>"
+                  Don't have an account? <ButtonBase onClick={togglemodehandler}>sign Up</ButtonBase>
                 </Typography>
               </Grid>
             </Grid>
