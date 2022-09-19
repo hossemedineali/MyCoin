@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
@@ -12,7 +12,6 @@ import SearchCoin from "./searchcoin";
 import AddNewPortfolio from "./AddNewPortfolio";
 import { Modal, Typography,Snackbar } from "@mui/material";
 
-import { pink ,brown} from '@mui/material/colors';
 
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -135,7 +134,7 @@ const style = {
         
             return ( <Box id='actions' sx={{display:'flex',gap:'0.2rem',}}>
 
-                 <VisibilityOffIcon sx={{ fontSize: 30 }}/>
+                 
                 <DonutLargeIcon  sx={{ fontSize: 30, color:iconcolor?'brown':'disabled'}} onClick={toggleShowDoughnut}/>
                 
                 {type!='all'&&<Box>
@@ -232,4 +231,4 @@ const style = {
         
         export default Actions;
 
-        color: brown[600]
+      

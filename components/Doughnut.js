@@ -56,9 +56,9 @@ const options={
                             const halfheight=height/2
                             const halfwidth=width/2
 
-                            const xLine=x>=halfwidth?x+15:x-15
-                            const yLine=y>=halfheight?y+15:y-15
-                            const extraline=x>=halfwidth?15:-15
+                            const xLine=x>=halfwidth?x+10:x-10
+                            const yLine=y>=halfheight?y+10:y-10
+                            const extraline=x>=halfwidth?10:-10
                             //Line
                             ctx.beginPath()
                             ctx.moveTo(x,y)
@@ -73,7 +73,7 @@ const options={
                             ctx.font='15px Arial'
 
                             const textXPosition=x>=halfwidth?'left':'right'
-                            const plusFive=x>=halfwidth? 5 :-5
+                            const plusFive=x>=halfwidth? 2 :-2
                             ctx.textAlign=textXPosition
                             ctx.textBaseLine='middle'
                             ctx.fillStyle=dataset.borderColor[index]
@@ -153,7 +153,7 @@ const options={
        
       
         return ( 
-        <Box sx={{width:{xs:'80%',md:'50%'},height:'auto',margin:'2rem auto',}}>
+        <Box sx={{width:{xs:'100%',md:'50%'},height:'auto',margin:'0',}}>
 
            {coinsdata&& <Doughnut data={datax} options={options} plugins={plugins}/>}
         </Box> );

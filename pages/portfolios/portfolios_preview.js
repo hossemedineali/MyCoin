@@ -92,6 +92,8 @@ const Portfolios_preview = (props) => {
 
           setisLoading(false)
                 setcoingekolimit(true)
+
+                console.log(err)
             
           })
         
