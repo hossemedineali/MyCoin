@@ -61,7 +61,7 @@ const dispatch=useDispatch()
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Login and Security</MenuItem>
+        
         <MenuItem onClick={handleClose}><Link href={'/portfolios/portfolios_preview'}><Typography>Portfolios</Typography></Link></MenuItem>
         <MenuItem onClick={handellogout}>Logout</MenuItem>
       </Menu>

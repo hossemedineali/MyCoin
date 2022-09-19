@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 import Chart from 'chart.js/auto';
 
@@ -46,11 +46,13 @@ const options={
                        
                         chart.getDatasetMeta(i).data.forEach((datapoint,index)=>{
                             const {x,y}=datapoint.tooltipPosition();
-                           // ctx.fillStyle=dataset.borderColor[index]
+                           
+                            // ctx.fillStyle=dataset.borderColor[index]
                             //ctx.fill();
                             //ctx.fillRect(x,y,2,2)
 
                             //draw line
+
                             const halfheight=height/2
                             const halfwidth=width/2
 

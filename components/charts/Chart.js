@@ -84,7 +84,7 @@ const Chartjs = (props) => {
             const prices=data.prices
 
             const market_caps=data.market_caps
-            //const volume=data.total_volumes
+        
 
             let label;
             let dat;
@@ -137,7 +137,7 @@ const Chartjs = (props) => {
 
     
     
-    return ( <Box sx={{width:'90%' ,height:'75%',margin:'2rem auto',}}>
+    return ( <Box sx={{width:{sx:'100%',md:'90%'} ,height:'75%',margin:'2rem auto',}}>
         
         {chartdata &&<Line data={chartdata} options={options}/>}
     </Box> );

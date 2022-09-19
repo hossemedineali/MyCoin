@@ -57,7 +57,7 @@ const MyInfoTab = (props) => {
            <TabPanel value={value} index={0}>
 
               <Grid container >
-                 <Grid item xs={12} md={8}>
+                 <Grid item xs={12} md={8} >
                   <ChartWrapper coin={props.coininfo.id} coininfo={props.coininfo}/>
                   
                  </Grid>

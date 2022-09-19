@@ -27,8 +27,8 @@ const Coin = ({coininfo}) => {
                     <title>{coininfo.id} price live : {coininfo.symbol} price live chart and more</title>
                  </Head>
                  <Scroll showBelow={950}/>
-        <Box sx={{margin:{xs:'1rem',sm:'3rem',md:'2rem'}}}>
-        <Box sx={{height:{xs:'auto',md:'72vh'} ,paddingTop:'4rem' }}>
+        <Box sx={{margin:{xs:'0',sm:'3rem',md:'2rem'}}}>
+        <Box sx={{height:{xs:'auto',md:'72vh'} ,paddingTop:'0' }}>
          <Grid container>
             <Grid item xs={12} md={8}>
             <HeadCoinInfo coininfo={coininfo}
@@ -73,33 +73,10 @@ const Coin = ({coininfo}) => {
 
 
 
-/* export async function getStaticPaths(){
 
-    return {
-        fallback:true,
-        paths:[
-           { params: {
-                coinId:'bitcoin',
-                //coinId:'crinet',
-                
-            }}
-        ]
-    }
-} */
 
-/* export async function getStaticProps(context){
 
-    const res = await fetch('https://api.coingecko.com/api/v3/coins/'+context.params.coinId)
-    const coins = await res.json()
 
-    return {
-        props: {
-          coininfo:coins
-        },
-      };
-} */
-
-//   https://api.coingecko.com/api/v3/coins/bitcoin?sparkline=true
 export async function getServerSideProps({ query }) {
     const coinId = query.coinId
     let coininfo
@@ -110,14 +87,14 @@ export async function getServerSideProps({ query }) {
     
   })
   .catch(function (error) {
-    // handle error
+  
     if (error.message=='Request failed with status code 404') {
         coininfo = error.message
     }
     
   })
   .then(function () {
-    // always executed
+ 
   });
 
   if (coininfo=='Request failed with status code 404'){
@@ -133,17 +110,7 @@ export async function getServerSideProps({ query }) {
     }
    }
   }
-/* export async function getServerSideProps({ query }) {
-    const coinId = query.coinId
-    const res = await fetch('https://api.coingecko.com/api/v3/coins/'+coinId)
-    const coins = await res.json()
 
-    return{
-        props: {
-            coininfo:coins
-          },
-    }
-  } */
 
 export default Coin;
 

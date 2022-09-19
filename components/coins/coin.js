@@ -35,7 +35,7 @@ export default function Coins(props) {
   const columns = [
     {field:'', headerName:'', width:50,sortable:false,renderCell:(params)=>(<Box><StarBorderIcon style={{fill: "green"}} color='primary'/></Box>)},
     { field: 'market_cap_rank', headerName: '#',headerAlign: 'left',align: 'left', width: 40},
-    { field: 'image', headerName: 'name',headerAlign: 'left',align: 'left', width: 170 , renderCell: (params) => (<Link href={'/coin/'+params.id}><Box sx={{display:'flex '}}>
+    { field: 'image', headerName: 'name',headerAlign: 'left',align: 'left', width: 170 , renderCell: (params) => (<Link href={'/coin/'+params.id}><Box sx={{display:'flex ',cursor:'pointer'}}>
       <Image
       src={params.value}
       alt="Picture of the author"

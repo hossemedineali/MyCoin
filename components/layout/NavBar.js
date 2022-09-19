@@ -29,8 +29,8 @@ import Portfolio from './portfolio';
 
 
 
-const pages = ['Cryptocurrencies', 'NFTs', 'News'];
-const paths =['/','/nfts','/news']
+const pages = ['Cryptocurrencies',  'News'];
+const paths =['/','/news']
 
 const ResponsiveAppBar = () => {
  const router=useRouter();
@@ -155,7 +155,7 @@ const ResponsiveAppBar = () => {
                  <Divider/>
                  
                  <MenuItem sx={{height:'3rem',display:'flex',alignItems:'center'}}>
-                 <Link href="/nfts"><Typography textAlign="center" width="100vw">NFTs</Typography></Link>
+                
                  </MenuItem>
                  <Divider/>
                   <MenuItem>
@@ -193,17 +193,3 @@ export default ResponsiveAppBar;
 
 
 
-/*
- <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" width="100vw">{page}</Typography>
-                </MenuItem>
-*/
-
-
-/*
-{pages.map((page) => (
-                <MenuItem key={{page}} onClick={handleCloseNavMenu}>
-                 <Link href="/{page}"><Typography textAlign="center" width="100vw">{page}</Typography></Link>
-                </MenuItem>
-              ))}
-*/
